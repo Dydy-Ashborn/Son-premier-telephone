@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#16332A">
+<title>Son premier téléphone — on vous guide, réglage par réglage</title>
+<meta name="description" content="On vous guide réglage par réglage pour configurer le téléphone de votre enfant, et comprendre ce qui se passe vraiment sur chaque application.">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="1er téléphone">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#16332A; --ink-2:#3E4A42; --muted:#75806E;
+  --paper:#FBF7EC; --card:#FFFDF6; --line:#DDD3B7;
+  --signal:#3F6B4A; --signal-2:#E7EEE2;
+  --critique:#A63B2E; --critique-2:#F5E6E1;
+  --bloque:#B08A3E; --bloque-2:#F6EDD9;
+  --r:6px;
+  --shadow:0 1px 2px rgba(22,51,42,.07),0 10px 26px -12px rgba(22,51,42,.24);
+  --display:'Lora',ui-serif,Georgia,serif;
+  --body:'Public Sans',ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom)}
+h1,h2,h3{font-family:var(--display);font-weight:700;letter-spacing:-.01em;line-height:1.14;margin:0}
+p{margin:0 0 .8em} p:last-child{margin-bottom:0}
+button{font-family:inherit;font-size:inherit;cursor:pointer;border:0;background:none;color:inherit}
+:focus-visible{outline:3px solid var(--signal);outline-offset:2px;border-radius:4px}
+.wrap{max-width:560px;margin:0 auto;padding:0 18px}
+
+.mast{padding:22px 0 10px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.logo{font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:-.01em;line-height:1.05}
+.logo .dot{color:var(--critique)}
+.mast .tag{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+
+/* ---- chemin de réglages ---- */
+.path{font-family:var(--mono);font-size:13px;line-height:1.9;background:#F6F2E3;border:1px solid var(--line);border-left:3px solid var(--ink);border-radius:4px;padding:10px 12px;margin:10px 0;overflow-wrap:anywhere}
+.path b{font-weight:500;background:#fff;border:1px solid var(--line);border-radius:3px;padding:2px 6px;white-space:nowrap;display:inline-block;margin:2px 0}
+.path i{font-style:normal;color:var(--muted);padding:0 3px}
+.path .set{color:var(--signal);font-weight:500}
+
+/* ---- SIGNATURE : maquette d'écran de réglages ---- */
+.mock{margin:14px 0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#F4F2E9;box-shadow:var(--shadow);max-width:340px}
+.mock-bar{background:#fff;border-bottom:1px solid var(--line);padding:9px 14px;font-size:13.5px;font-weight:600;text-align:center;position:relative;color:var(--ink)}
+.mock-bar::before{content:"‹";position:absolute;left:12px;font-size:19px;line-height:1;top:8px;color:var(--muted);font-weight:400}
+.mock-list{background:#fff;margin:10px;border-radius:8px;overflow:hidden;border:1px solid #E7E1CE}
+.mock-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;font-size:14px;border-bottom:1px solid #EEE9DA;background:#fff}
+.mock-row:last-child{border-bottom:0}
+.mock-row .v{color:var(--muted);font-size:13px;flex:none;display:flex;align-items:center;gap:5px}
+.mock-row .v::after{content:"›";font-size:17px;color:#C6BEA3;line-height:1}
+.mock-row.novc .v::after{content:""}
+.mock-row.hot{background:var(--signal-2);box-shadow:inset 3px 0 0 var(--signal);font-weight:600}
+.mock-row.hot .v{color:var(--signal);font-weight:600}
+.tog{width:38px;height:22px;border-radius:12px;background:#D6D0BC;position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.tog.on{background:var(--signal)} .tog.on::after{left:18px}
+.mock-cap{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:0 12px 10px}
+.mock-note{background:#fff;border-top:1px solid var(--line);padding:9px 12px;font-size:12.5px;color:var(--muted);line-height:1.45}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
+
+.hero{padding:14px 0 26px}
+.hero h1{font-size:clamp(28px,8vw,38px);font-weight:700}
+.hero .lede{font-size:17px;color:var(--ink-2);margin-top:14px;max-width:36ch}
+.banner{background:var(--ink);color:#fff;border-radius:var(--r);padding:24px 20px 22px;margin:14px 0 16px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.banner::after{content:"";position:absolute;top:14px;right:16px;width:52px;height:52px;border:1.5px solid rgba(255,255,255,.14);border-radius:50%}
+.banner .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:#B9CDB4;display:block;margin-bottom:14px}
+.banner h1{font-size:clamp(20px,5.8vw,25px);color:#fff;max-width:26ch;line-height:1.25;font-weight:700}
+.banner .hook-sub{font-size:13.5px;color:rgba(255,255,255,.72);margin-top:7px;line-height:1.45}
+.banner .btn-primary{background:#fff;color:var(--ink);margin-top:20px}
+.hook-divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:rgba(255,255,255,.42);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+.hook-divider::before,.hook-divider::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.18)}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 18px}
+.chip{font-family:var(--mono);font-size:11px;background:var(--card);border:1px solid var(--line);border-radius:4px;padding:6px 11px;color:var(--ink-2);line-height:1.3}
+.tabs{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 18px}
+.tab{flex:1 1 calc(50% - 5px);box-sizing:border-box;display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:5px;padding:13px 12px;text-align:left;color:var(--ink);transition:transform .12s ease}
+.tab:active{transform:scale(.98)}
+.tab svg{flex:none;width:20px;height:20px}
+.tab span{font-size:13.5px;font-weight:600;line-height:1.25}
+.tab.urgent{border-color:#E3B7AC;background:var(--critique-2);color:var(--critique)}
+.note{font-size:13.5px;color:var(--muted);line-height:1.5}
+.installbar{display:flex;align-items:center;gap:10px;background:var(--ink);color:#fff;border-radius:5px;padding:12px 13px;margin:12px 0 0;font-size:13px;line-height:1.4}
+.installbar b{color:#B9CDB4}
+.installbar .msg{flex:1}
+.installbtn{flex:none;background:#fff;color:var(--ink);border-radius:4px;padding:8px 13px;font-weight:600;font-size:12.5px;white-space:nowrap}
+.installclose{flex:none;color:rgba(255,255,255,.55);font-size:19px;line-height:1;padding:2px 4px}
+
+.btn{display:block;width:100%;text-align:center;padding:15px 18px;border-radius:5px;font-weight:600;font-size:16px;transition:transform .12s ease}
+.btn:active{transform:scale(.985)}
+.btn-primary{background:var(--ink);color:#fff}
+.btn-ghost{background:transparent;color:var(--ink-2);border:1px solid var(--line);font-weight:500}
+
+.qhead{display:flex;justify-content:space-between;align-items:baseline;margin:6px 0 16px;font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+.qbar{height:3px;background:var(--line);border-radius:2px;overflow:hidden;margin-bottom:22px}
+.qbar span{display:block;height:100%;background:var(--signal);transition:width .35s cubic-bezier(.4,0,.2,1)}
+.q h2{font-size:23px;margin-bottom:6px;font-weight:700}
+.q .hint{font-size:14.5px;color:var(--muted);margin-bottom:18px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:5px;padding:14px 15px;transition:border-color .15s,background .15s}
+.opt[aria-pressed="true"]{border-color:var(--signal);background:var(--signal-2)}
+.opt .box{flex:none;width:19px;height:19px;border:1.5px solid var(--muted);border-radius:4px;margin-top:2px;position:relative}
+.opt[aria-pressed="true"] .box{border-color:var(--signal);background:var(--signal)}
+.opt[aria-pressed="true"] .box::after{content:"";position:absolute;left:5.5px;top:2px;width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(42deg)}
+.opt .lab{font-weight:600;font-size:15.5px;display:block}
+.opt .sub{font-size:13.5px;color:var(--muted);display:block;margin-top:1px;line-height:1.4}
+
+.verdict{border-radius:var(--r);padding:20px;color:#fff;background:var(--ink);margin-bottom:16px}
+.verdict .tier{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;opacity:.65}
+.verdict h2{font-size:25px;margin:6px 0 10px;font-weight:700}
+.verdict p{font-size:15px;opacity:.88;line-height:1.5}
+.stat{display:flex;gap:22px;margin-top:16px;padding-top:14px;border-top:1px dashed rgba(255,255,255,.22)}
+.stat b{font-family:var(--display);font-size:27px;display:block;line-height:1.1;font-weight:700}
+.stat span{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;opacity:.6}
+
+.grp{margin:22px 0 10px}
+.grp h3{font-size:13px;font-family:var(--mono);font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.item{display:flex;gap:12px;align-items:baseline;padding:12px 0;border-bottom:1px dashed var(--line)}
+.item .n{font-family:var(--mono);font-size:12px;color:var(--muted);flex:none;width:22px}
+.item .t{font-size:15px;font-weight:500;flex:1}
+.item .flag{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;padding:2px 6px;border-radius:3px;flex:none;background:var(--critique-2);color:var(--critique)}
+
+.exec-top{position:sticky;top:0;z-index:5;background:var(--paper);padding:12px 0 10px;border-bottom:1px solid var(--line)}
+.spine{display:flex;gap:3px}
+.spine i{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.spine i.done{background:var(--signal)}
+.spine i.skip{background:var(--muted);opacity:.45}
+.spine i.stuck{background:var(--bloque)}
+.spine i.now{background:var(--ink)}
+.exec-meta{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:9px;text-transform:uppercase;letter-spacing:.05em}
+
+.step{padding:20px 0 26px}
+.step .chip{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--ink);color:#fff;padding:3px 8px;border-radius:3px;margin-bottom:12px}
+.step .chip.crit{background:var(--critique)}
+.step .chip.brief{background:var(--signal)}
+.step h2{font-size:23px;margin-bottom:12px;font-weight:700}
+.why{font-size:15px;color:var(--ink-2);background:var(--card);border:1px solid var(--line);border-radius:5px;padding:14px 15px}
+.why b{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--critique);display:block;margin-bottom:5px;font-weight:500}
+/* ---- SIGNATURE : badge façon tampon encreur ---- */
+.locktag{display:flex;align-items:center;gap:13px;padding:11px 14px 11px 11px;margin-top:10px;border-radius:5px;border:1px solid var(--line);background:var(--card)}
+.locktag.device{border-color:var(--signal)}
+.locktag.partial{border-color:var(--bloque)}
+.locktag.none{border-color:var(--critique)}
+.locktag.device .ic{color:var(--signal)}
+.locktag.partial .ic{color:var(--bloque)}
+.locktag.none .ic{color:var(--critique)}
+.locktag span:last-child{font-size:13px;line-height:1.4;color:var(--ink-2)}
+.locktag .ic{flex:none;width:32px;height:32px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;position:relative;transform:rotate(-7deg)}
+.locktag .ic::after{content:"";position:absolute;inset:3px;border:1px solid currentColor;border-radius:50%;opacity:.35}
+.locktag .ic svg{width:14px;height:14px;position:relative}
+.score-ring{position:relative;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.score-ring .pct{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--display);font-weight:700;line-height:1;text-align:center;white-space:nowrap}
+.score-ring .pct small{display:block;font-family:var(--mono);font-weight:500;text-transform:uppercase;letter-spacing:.05em;opacity:.65}
+.score-mini-row{display:flex;align-items:center;gap:10px}
+.score-mini-label{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);line-height:1.3}
+.score-mini-label b{display:block;color:var(--ink);font-family:var(--display);font-size:15px;font-weight:700}
+.score-hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:8px 0 22px}
+.score-hero .cap{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-top:14px}
+.dothis{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:20px 0 2px}
+.step ol{margin:8px 0 0;padding-left:20px;font-size:15px}
+.step ol>li{margin-bottom:12px}
+.tip{font-size:13.5px;color:var(--muted);margin-top:16px;padding-left:12px;border-left:2px solid var(--line);line-height:1.5}
+
+/* ---- brief / formation ---- */
+.brief h2{font-size:25px;margin-bottom:4px;font-weight:700}
+.brief .sub{font-size:14.5px;color:var(--muted);margin-bottom:18px}
+.fact{background:var(--card);border:1px solid var(--line);border-radius:5px;padding:0;margin-bottom:9px;overflow:hidden}
+.fact summary{list-style:none;cursor:pointer;padding:14px 15px;display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:16px;font-weight:700;color:var(--ink)}
+.fact summary::-webkit-details-marker{display:none}
+.fact summary::before{content:"";flex:none;width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .18s ease;margin-right:2px}
+.fact[open] summary::before{transform:rotate(45deg)}
+.fact summary .idx{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--muted);flex:none}
+.fact .body{padding:0 15px 15px}
+.fact p{font-size:14.5px;color:var(--ink-2);line-height:1.5;margin:0}
+.fact.red{border-color:#E3B7AC;background:var(--critique-2)}
+.fact.red summary{color:var(--critique)}
+.fact.red summary::before{border-color:var(--critique)}
+.fact-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px}
+.fact-head span{font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.signals{background:var(--ink);color:#fff;border-radius:var(--r);padding:18px;margin:16px 0}
+.signals h4{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.07em;opacity:.6;margin:0 0 10px;font-weight:500}
+.signals li{font-size:14.5px;margin-bottom:8px;line-height:1.45}
+.signals ul{margin:0;padding-left:18px}
+
+.actions{position:sticky;bottom:0;background:linear-gradient(to top,var(--paper) 72%,rgba(251,247,236,0));padding:14px 0 calc(14px + env(safe-area-inset-bottom));display:flex;gap:8px}
+.actions button{flex:1;padding:14px 6px;border-radius:5px;font-weight:600;font-size:14.5px;border:1.5px solid var(--line);background:var(--card)}
+.actions .ok{flex:1.7;background:var(--signal);color:#fff;border-color:var(--signal)}
+.actions .stuckb{color:var(--bloque)}
+.actions .wide{flex:1;background:var(--ink);color:#fff;border-color:var(--ink)}
+
+.said{background:var(--ink);color:#fff;border-radius:var(--r);padding:22px;margin:18px 0}
+.said .q{font-family:var(--display);font-size:20px;line-height:1.3;font-weight:600}
+.said .q::before{content:"« "} .said .q::after{content:" »"}
+.said .sm{color:rgba(255,255,255,.75);font-size:14px;margin-top:14px}
+
+.urg{border:1.5px solid var(--critique);border-radius:var(--r);padding:18px;background:var(--critique-2);margin:16px 0}
+.urg h3{font-family:var(--display);font-size:19px;color:var(--critique);margin-bottom:8px;font-weight:700}
+.urg ol,.urg ul{padding-left:18px;margin:10px 0 0;font-size:14.5px}
+.urg li{margin-bottom:9px}
+.urg a{color:var(--critique);font-weight:600}
+.urg .warn{background:#fff;border-radius:4px;padding:12px;margin-top:12px;font-size:14px;border-left:3px solid var(--critique)}
+
+.stuck-list{background:var(--bloque-2);border:1px solid #E4CE96;border-radius:var(--r);padding:16px;margin:16px 0}
+.stuck-list h3{font-family:var(--display);font-size:17px;color:var(--bloque);margin-bottom:8px;font-weight:700}
+.stuck-list li{font-size:14.5px;margin-bottom:5px}
+
+.tiles{display:flex;flex-direction:column;gap:9px;margin:16px 0}
+.tile{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:5px;padding:14px 15px}
+.tile>span:last-child{flex:1;display:flex;flex-direction:column;justify-content:space-between}
+.tile b{font-size:15.5px;font-weight:600;display:block}
+.tile span span{font-size:13.5px;color:var(--muted);display:block;line-height:1.4}
+.tile::after{content:"›";font-size:20px;color:#C6BEA3;flex:none}
+
+.applogo{flex:none;width:34px;height:34px;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.applogo.mini{width:22px;height:22px;border-radius:3px}
+.applogo svg{width:60%;height:60%}
+.applogo.snap{background:#FFFC00}
+.applogo.tiktok{background:#000}
+.applogo.insta{background:linear-gradient(135deg,#FEDA75,#D62976 55%,#4F5BD5)}
+.applogo.discord{background:#5865F2}
+.applogo.wa{background:#25D366}
+.applogo.yt{background:#F4F2E9;border:1px solid var(--line)}
+.applogo.roblox{background:#000}
+.applogo.fortnite{background:#151519}
+.applogo.mc{background:#7CB342}
+.app-trio{display:flex;flex:none;gap:4px}
+.app-trio .applogo{width:22px;height:22px;border-radius:3px}
+
+footer{padding:34px 0 40px;font-size:12.5px;color:var(--muted);line-height:1.5}
+footer hr{border:0;border-top:1px solid var(--line);margin:0 0 16px}
+.find{font-size:13.5px;color:var(--ink-2);background:#F6F2E3;border:1px dashed var(--line);border-radius:4px;padding:11px 12px;margin-top:14px;line-height:1.5}
+.find b{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);display:block;margin-bottom:4px;font-weight:500}
+.verif{font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.04em;margin-top:20px;padding-top:12px;border-top:1px dashed var(--line)}
+.milestone{text-align:center;padding:30px 0}
+.milestone .ring{width:74px;height:74px;border-radius:50%;background:var(--signal-2);border:2px solid var(--signal);margin:0 auto 20px;position:relative}
+.milestone .ring::after{content:"";position:absolute;left:26px;top:19px;width:16px;height:29px;border:solid var(--signal);border-width:0 4px 4px 0;transform:rotate(42deg)}
+.milestone h2{font-size:27px;margin-bottom:12px;font-weight:700}
+.milestone p{font-size:15.5px;color:var(--ink-2);max-width:34ch;margin:0 auto .9em}
+.gotcha{background:var(--card);border:1px solid var(--line);border-radius:5px;padding:15px;margin:18px 0;text-align:left}
+.gotcha li{font-size:14.5px;margin-bottom:7px}
+.gotcha ul{margin:0;padding-left:18px}
+.rem{background:var(--card);border:1px solid var(--line);border-radius:5px;padding:15px;margin-bottom:10px;display:flex;gap:13px;align-items:flex-start}
+.rem .when{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--signal);flex:none;width:74px;padding-top:2px;font-weight:500}
+.rem b{font-size:15px;display:block;margin-bottom:2px}
+.rem span{font-size:13.5px;color:var(--muted);line-height:1.45;display:block}
+.hidden{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="mast"><span class="logo">Son premier<br>téléphone<span class="dot">.</span></span><span class="tag" id="mastTag">Accueil</span></header>
+
+<div id="installBar" class="installbar hidden">
+  <span class="msg" id="installMsg"></span>
+  <button class="installbtn hidden" id="installBtn">Installer</button>
+  <button class="installclose" id="installClose" aria-label="Fermer">×</button>
+</div>
+
+<!-- ACCUEIL -->
+<section id="vHome">
+  <div class="banner">
+    <span class="eyebrow">Diagnostic gratuit · 6 questions · 3 min</span>
+    <h1>Vous lui offrez son premier téléphone ?</h1>
+    <p class="hook-sub">C'est le bon moment pour bien régler, une bonne fois.</p>
+    <div class="hook-divider"><span>ou</span></div>
+    <h1>Il l'a déjà depuis un moment ?</h1>
+    <p class="hook-sub">Le contrôle parental en place ne fait probablement pas ce que vous croyez.</p>
+    <button class="btn btn-primary" id="homeCta" onclick="start()">Commencer le diagnostic</button>
+  </div>
+
+  <div class="chips">
+    <span class="chip">Le socle d'abord, votre place gardée</span>
+    <span class="chip">On explique avant de régler</span>
+    <span class="chip">Rappels dans l'agenda</span>
+    <span class="chip">Ne lit aucun message</span>
+  </div>
+
+  <div class="tabs">
+    <button class="tab" onclick="show('vLearn')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      <span>Comprendre les applications</span>
+    </button>
+    <button class="tab" onclick="show('vPrev')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+      <span>Reconnaître les signaux</span>
+    </button>
+    <button class="tab" onclick="show('vRem')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+      <span>Programmer les rappels</span>
+    </button>
+    <button class="tab urgent" onclick="show('vUrgence')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 20h20L12 3Z"/><line x1="12" y1="9" x2="12" y2="14"/><line x1="12" y1="17.5" x2="12" y2="17.51"/></svg>
+      <span>Ça se passe maintenant</span>
+    </button>
+  </div>
+</section>
+
+<!-- DIAGNOSTIC -->
+<section id="vDiag" class="hidden">
+  <div class="qhead"><span id="qCount"></span><button onclick="back()" id="qBack" style="color:var(--muted)">← Retour</button></div>
+  <div class="qbar"><span id="qFill" style="width:0"></span></div>
+  <div class="q"><h2 id="qTitle"></h2><p class="hint" id="qHint"></p><div class="opts" id="qOpts"></div></div>
+  <button class="btn btn-primary hidden" id="qNext" style="margin-top:18px" onclick="next()">Continuer</button>
+</section>
+
+<!-- RAPPORT -->
+<section id="vReport" class="hidden">
+  <div class="verdict">
+    <div class="tier" id="rTier"></div><h2 id="rTitle"></h2><p id="rBody"></p>
+    <div class="stat">
+      <div><b id="rCount">0</b><span>étapes</span></div>
+      <div><b id="rCrit">0</b><span>critiques</span></div>
+      <div><b id="rTime">0</b><span>minutes</span></div>
+    </div>
+  </div>
+  <div id="rList"></div>
+  <button class="btn btn-primary" style="margin-top:22px" onclick="startExec()">Lancer le plan</button>
+  <button class="btn btn-ghost" style="margin-top:9px" onclick="reset()">Recommencer le diagnostic</button>
+  <p class="note" style="margin-top:18px">Les maquettes reproduisent l'écran à obtenir, pas l'écran exact de votre téléphone. Les intitulés bougent d'une version à l'autre : si un libellé diffère un peu, cherchez le plus proche, la logique reste la même.</p>
+  <button class="btn btn-ghost" style="margin-top:18px" onclick="show('vDumb')">Envie d'aller plus loin ? Le mode téléphone simple →</button>
+</section>
+
+<!-- EXÉCUTION -->
+<section id="vExec" class="hidden">
+  <div class="exec-top">
+    <div class="score-mini-row">
+      <div class="spine" id="spine" style="flex:1"></div>
+      <div id="scoreMini"></div>
+    </div>
+    <div class="exec-meta"><span id="ePos"></span><button onclick="quitExec()" style="text-transform:uppercase;letter-spacing:.05em;color:var(--muted)">Quitter</button></div>
+  </div>
+  <div class="step" id="step"></div>
+  <div class="actions" id="execActions"></div>
+</section>
+
+<!-- FIN -->
+<section id="vDone" class="hidden">
+  <div class="score-hero" id="scoreHero"></div>
+  <div class="hero" style="padding-bottom:10px"><h1 id="dTitle"></h1><p class="lede" id="dLede"></p></div>
+  <div id="dStuck"></div>
+  <div class="said">
+    <div class="q">Si quelqu'un te met mal à l'aise, tu me le dis. Je ne te confisque pas ton téléphone.</div>
+    <p class="sm">C'est la dernière étape, et la seule qui compte vraiment. Un enfant qui craint de perdre son téléphone se tait — et c'est le silence qui laisse les situations dégénérer, pas l'absence de filtre. Dites-la à voix haute, aujourd'hui.</p>
+  </div>
+  <div class="tiles">
+    <button class="tile" onclick="show('vPrev')"><span><b>Les signaux à connaître</b><span>Ce qui doit vous alerter, et comment réagir</span></span></button>
+    <button class="tile" onclick="show('vLearn')"><span><b>Comprendre les applications</b><span>Relire les fiches quand vous voulez</span></span></button>
+    <button class="tile" onclick="show('vRem')"><span><b>Programmer les rappels</b><span>Pour que ça ne se périme pas dans trois mois</span></span></button>
+  </div>
+  <div class="grp"><h3>À refaire</h3></div>
+  <p style="font-size:15px;color:var(--ink-2)">Un réglage tient jusqu'à la prochaine mise à jour, la prochaine app installée, le prochain anniversaire. Repassez le diagnostic <b>tous les trois mois</b>.</p>
+  <button class="btn btn-primary" style="margin-top:20px" onclick="show('vRem')">Programmer les rappels</button>
+  <button class="btn btn-ghost" style="margin-top:9px" onclick="startExec()">Reprendre le plan</button>
+  <button class="btn btn-ghost" style="margin-top:9px" onclick="reset()">Nouveau diagnostic</button>
+  <button class="btn btn-ghost" style="margin-top:9px" onclick="show('vDumb')">Envie d'aller plus loin ? Le mode téléphone simple →</button>
+</section>
+
+<!-- FORMATION -->
+<section id="vLearn" class="hidden">
+  <div class="hero" style="padding-bottom:8px">
+    <h1>Ce qui se passe vraiment sur ces applications</h1>
+    <p class="lede">Pas de panique, pas de diabolisation. Ce qu'il faut savoir pour parler à votre enfant sans dire de bêtises.</p>
+  </div>
+  <div class="tiles" id="learnTiles"></div>
+  <div id="learnBody"></div>
+  <button class="btn btn-ghost" style="margin-top:14px" onclick="show(lastView)">Retour</button>
+</section>
+
+<!-- PRÉVENTION -->
+<section id="vPrev" class="hidden">
+  <div class="hero" style="padding-bottom:8px">
+    <h1>Le scénario est presque toujours le même</h1>
+    <p class="lede">Ce n'est pas un inconnu louche dans une ruelle. C'est une méthode, en cinq temps, et elle est reconnaissable.</p>
+  </div>
+  <div id="prevBody"></div>
+  <button class="btn btn-ghost" style="margin-top:14px" onclick="show(lastView)">Retour</button>
+</section>
+
+<!-- RAPPELS -->
+<section id="vRem" class="hidden">
+  <div class="hero" style="padding-bottom:8px">
+    <h1>Un réglage se périme</h1>
+    <p class="lede">Une mise à jour, une app installée, un anniversaire, et votre configuration a un trou. Deux minutes par semaine valent mieux qu'une grande vérification une fois par an.</p>
+  </div>
+  <div class="signals" style="margin:0 0 18px">
+    <h4>Le vrai réglage, c'est vous</h4>
+    <p style="font-size:14.5px;line-height:1.55;margin-bottom:10px">La sécurité ne tient pas qu'aux cases cochées. Elle tient d'abord à la régularité des contrôles — surtout pour tout ce qui n'est pas verrouillé par un code (repérez le cadenas ouvert dans le plan : ces réglages-là, votre enfant peut les changer seul).</p>
+    <p style="font-size:14.5px;line-height:1.55;margin-bottom:10px">Vérifier le téléphone fait partie de son usage normal, au même titre qu'attacher sa ceinture en voiture. Ce n'est ni une punition ni une intrusion — vous ne lisez pas ses messages avec son copain ou sa copine, vous vérifiez que les réglages tiennent.</p>
+    <p style="font-size:14.5px;line-height:1.55">Ne prévenez jamais le jour précis du contrôle : un enfant averti peut réactiver un réglage juste avant, puis le redésactiver juste après.</p>
+  </div>
+  <div id="remBody"></div>
+  <button class="btn btn-primary" style="margin-top:16px" onclick="downloadICS()">Ajouter les rappels à mon agenda</button>
+  <p class="note" style="margin-top:12px">Un fichier agenda se télécharge. Ouvrez-le, votre application Agenda s'en charge — rien n'est envoyé nulle part, et vous pouvez tout supprimer d'un geste.</p>
+  <button class="btn btn-ghost" style="margin-top:14px" onclick="show(lastView)">Retour</button>
+</section>
+
+<!-- MODE SIMPLE -->
+<section id="vDumb" class="hidden">
+  <div class="hero" style="padding-bottom:8px">
+    <h1>Le mode téléphone simple</h1>
+    <p class="lede">Tout bloquer sauf les appels vers vous. Pour un premier téléphone, un enfant jeune, ou en dernier recours — c'est déjà possible avec les outils du téléphone, sans rien installer.</p>
+  </div>
+  <p class="note" style="margin-bottom:18px">Ce n'est pas une confiscation : votre enfant garde un moyen de vous appeler et d'être appelé. C'est réversible en une minute depuis votre téléphone, dès que vous voulez rouvrir l'accès progressivement.</p>
+  <div id="dumbBody"></div>
+  <button class="btn btn-ghost" style="margin-top:8px" onclick="show(lastView)">Retour</button>
+</section>
+
+<!-- URGENCE -->
+<section id="vUrgence" class="hidden">
+  <div class="hero" style="padding-bottom:8px">
+    <h1>Les 24 premières heures</h1>
+    <p class="lede">Si un adulte a contacté votre enfant, demandé des photos, ou le fait chanter. L'ordre compte : ce qui s'efface en premier passe en premier.</p>
+  </div>
+
+  <div class="urg">
+    <h3>Avant tout — ne faites pas de capture d'écran</h3>
+    <p style="font-size:14.5px"><b>Snapchat prévient l'autre personne dès que votre enfant fait une capture ou un enregistrement d'écran d'une conversation.</b> Instagram fait de même sur les photos éphémères. Le prédateur reçoit la notification, comprend qu'un adulte est au courant, supprime son compte et disparaît. Vous perdez à la fois la preuve et la piste.</p>
+    <div class="warn"><b>La bonne méthode :</b> photographiez l'écran du téléphone de votre enfant <b>avec votre propre téléphone</b>. Aucune notification n'est envoyée, et vos photos sont horodatées et géolocalisées automatiquement — ce qui a plus de valeur qu'une capture d'écran.</div>
+  </div>
+
+  <div class="urg">
+    <h3>1 — Figez les preuves</h3>
+    <ol>
+      <li>Mettez le téléphone de l'enfant <b>en mode avion</b> avant de commencer. Ça évite qu'un message soit marqué comme lu, et qu'un contenu soit supprimé à distance pendant que vous travaillez.</li>
+      <li>Photographiez avec votre téléphone, dans l'ordre : la conversation entière en faisant défiler lentement, le profil du compte, sa liste d'amis si elle est visible.</li>
+      <li>Photographiez l'<b>identifiant exact</b> du compte, pas le nom affiché — le nom affiché change en une seconde, l'identifiant beaucoup moins.</li>
+      <li>Écrivez une chronologie datée à part : premier contact, ce qui a été demandé, ce qui a été envoyé, quand vous l'avez appris.</li>
+      <li>Demandez l'export des données du compte de votre enfant dans les réglages de l'application.</li>
+    </ol>
+    <div class="warn"><b>Ne faites pas :</b> répondre au suspect, vous faire passer pour votre enfant, le menacer, ou bloquer le compte avant d'avoir tout photographié. Se faire passer pour l'enfant peut fragiliser toute la procédure judiciaire.</div>
+  </div>
+
+  <div class="urg">
+    <h3>2 — Appelez le 3018</h3>
+    <p style="font-size:14.5px">Ce n'est pas une ligne d'écoute. C'est une association reconnue signaleur de confiance par l'Arcom, capable de faire supprimer un compte ou un contenu en quelques heures via des canaux prioritaires, et de transmettre aux autorités. Gratuit, 7j/7, <b>de 9h à 23h</b> — en dehors de ces horaires, le tchat de l'application 3018 reste accessible, et pour une urgence vitale immédiate, le 17 (police/gendarmerie) répond 24h/24.</p>
+    <p style="font-size:14.5px;margin-top:8px"><a href="tel:3018">Appeler le 3018</a> · <a href="https://www.3018.fr" target="_blank" rel="noopener">3018.fr</a></p>
+  </div>
+
+  <div class="urg">
+    <h3>3 — Signalez sur PHAROS</h3>
+    <p style="font-size:14.5px">Le signalement officiel en ligne. Il alimente notamment l'OFMIN, l'office de police judiciaire spécialisé depuis 2023 sur le grooming, la sextorsion et la pédocriminalité en ligne.</p>
+    <p style="font-size:14.5px;margin-top:8px"><a href="https://www.internet-signalement.gouv.fr" target="_blank" rel="noopener">internet-signalement.gouv.fr</a></p>
+  </div>
+
+  <div class="urg">
+    <h3>4 — Portez plainte, et sachez quoi faire si ça n'avance pas</h3>
+    <ol>
+      <li>Plainte au commissariat ou à la gendarmerie, avec le dossier imprimé et la chronologie.</li>
+      <li>Si on refuse ou si rien ne bouge : plainte écrite <b>directement au procureur de la République</b>, en recommandé avec accusé de réception.</li>
+      <li>Si le dossier est classé sans suite : une <b>plainte avec constitution de partie civile</b> devant le doyen des juges d'instruction déclenche une instruction obligatoire. C'est le seul levier qui contraint réellement. Faites-vous accompagner par un avocat, l'aide juridictionnelle est possible.</li>
+    </ol>
+    <p style="font-size:13.5px;margin-top:10px">Cet outil n'est pas un cabinet d'avocats. Ces démarches doivent être validées par un professionnel du droit.</p>
+  </div>
+
+  <div class="urg" style="border-color:var(--ink);background:#fff">
+    <h3 style="color:var(--ink)">Et votre enfant</h3>
+    <p style="font-size:14.5px">Il aura peur d'avoir des ennuis, ou honte, et c'est ce qui le fera se taire. Les trois phrases à dire en premier : <b>tu n'as rien fait de mal</b>, <b>tu n'es pas puni</b>, <b>on va s'en occuper à deux</b>. Ne demandez pas « pourquoi tu as fait ça ».</p>
+    <p style="font-size:14.5px;margin-top:10px">S'il a déjà envoyé des photos et qu'on le fait chanter : la seule bonne réponse est d'arrêter d'envoyer et d'arrêter de payer. Céder n'arrête jamais le chantage, ça l'alimente.</p>
+    <p style="font-size:14.5px;margin-top:10px">Si vous le sentez en détresse : le <b>3114</b> (prévention du suicide, gratuit, 24h/24) est là pour lui comme pour vous. Le <b>119</b> pour l'enfance en danger.</p>
+  </div>
+  <button class="btn btn-ghost" style="margin-top:8px" onclick="show(lastView)">Retour</button>
+</section>
+
+<footer><hr>
+  <p><b>Son premier téléphone</b> — outil d'information. Il ne collecte rien, n'envoie rien, et ne remplace ni un professionnel du droit ni un professionnel de santé.</p>
+  <p style="margin-top:10px">Depuis la loi adoptée en juillet 2026, l'accès aux principaux réseaux sociaux est interdit aux moins de 15 ans sans autorisation parentale, avec vérification d'âge par les plateformes. Le texte évolue — vérifiez son état d'application.</p>
+  <p style="margin-top:10px">Les noms et logos des applications citées (Snapchat, TikTok, Instagram, Discord, WhatsApp, YouTube, Roblox, Fortnite) appartiennent à leurs propriétaires respectifs. Cette application n'est ni affiliée, ni sponsorisée, ni approuvée par ces sociétés ; ils sont utilisés à titre purement descriptif, pour identifier les applications concernées par chaque réglage.</p>
+  <p style="margin-top:14px"><button onclick="show('vMentions')" style="color:var(--ink-2);text-decoration:underline;font-size:12.5px">Mentions légales</button></p>
+</footer>
+
+<!-- MENTIONS LÉGALES -->
+<section id="vMentions" class="hidden">
+  <div class="hero" style="padding-bottom:8px">
+    <h1 style="font-size:26px">Mentions légales</h1>
+  </div>
+
+  <div class="grp"><h3>Éditeur</h3></div>
+  <p style="font-size:14.5px;color:var(--ink-2);line-height:1.6">
+    DB Digital — Braz Dylan<br>
+    Entreprise Individuelle (EI)<br>
+    Sallanches, Haute-Savoie<br>
+    SIRET : 102 527 264 00018<br>
+    dbartisandigital@gmail.com<br>
+    Directeur de la publication : Braz Dylan
+  </p>
+
+  <div class="grp"><h3>Hébergement</h3></div>
+  <p style="font-size:14.5px;color:var(--ink-2);line-height:1.6">
+    Netlify, Inc.<br>
+    101 2nd Street, San Francisco, CA 94105-2239, États-Unis
+  </p>
+
+  <div class="grp"><h3>Propriété intellectuelle</h3></div>
+  <p style="font-size:14.5px;color:var(--ink-2);line-height:1.6">Le contenu de ce site (textes, structure, code) est la propriété de DB Digital, sauf mention contraire. Toute reproduction sans autorisation est interdite. Les marques, logos et noms de produits tiers cités (Snapchat, TikTok, Instagram, Discord, WhatsApp, YouTube, Roblox, Fortnite, iOS, Android, Family Link...) appartiennent à leurs propriétaires respectifs et sont mentionnés à titre purement informatif et descriptif, sans affiliation ni partenariat.</p>
+
+  <div class="grp"><h3>Données personnelles</h3></div>
+  <p style="font-size:14.5px;color:var(--ink-2);line-height:1.6">Cette application ne collecte, ne stocke sur aucun serveur et ne transmet aucune donnée personnelle. Les réponses au diagnostic et la progression sont conservées uniquement sur l'appareil du visiteur (stockage local du navigateur) et peuvent être effacées à tout moment en vidant les données de navigation. Aucun compte, aucun cookie de suivi, aucun outil d'analyse tiers n'est utilisé à ce jour ; si cela change, cette section sera mise à jour en conséquence.</p>
+
+  <div class="grp"><h3>Limites de responsabilité</h3></div>
+  <p style="font-size:14.5px;color:var(--ink-2);line-height:1.6">Les informations fournies, notamment dans la section « Urgence », sont données à titre informatif et ne constituent ni un conseil juridique, ni un conseil médical ou psychologique. En cas de doute, consultez un professionnel qualifié ou contactez directement les organismes cités (3018, PHAROS, 3114, 119).</p>
+
+  <button class="btn btn-ghost" style="margin-top:22px;margin-bottom:30px" onclick="show(lastView)">Retour</button>
+</section>
+</div>
+
+<script>
+/* ===================== stockage tolérant ===================== */
+const mem={};
+const store={
+  get(k){try{const v=localStorage.getItem('spt.'+k);return v?JSON.parse(v):(mem[k]??null)}catch(e){return mem[k]??null}},
+  set(k,v){mem[k]=v;try{localStorage.setItem('spt.'+k,JSON.stringify(v))}catch(e){}},
+  del(k){delete mem[k];try{localStorage.removeItem('spt.'+k)}catch(e){}}
+};
+
+/* ===================== helpers de rendu ===================== */
+const P=(...seg)=>`<div class="path">${seg.map(s=>s.startsWith('=')?`<b class="set">${s.slice(1)}</b>`:`<b>${s}</b>`).join('<i>›</i>')}</div>`;
+
+/* maquette d'écran de réglages.
+   m = {h:'titre', cap:'légende', rows:[[label, valeur|'ON'|'OFF', hot?]], note:''}
+   img:'url' permet de substituer une vraie capture plus tard. */
+function M(m){
+  if(m.img) return `<img class="mock" src="${m.img}" alt="${m.h||''}">`;
+  const rows=m.rows.map(([l,v,hot])=>{
+    let right, novc='';
+    if(v==='ON'||v==='OFF'){right=`<span class="tog${v==='ON'?' on':''}"></span>`;novc=' novc'}
+    else if(v===''||v==null){right=''}
+    else right=`<span class="v">${v}</span>`;
+    if(v===''||v==null) novc=' novc';
+    return `<div class="mock-row${hot?' hot':''}${novc}"><span>${l}</span>${right||'<span class="v"></span>'}</div>`;
+  }).join('');
+  return `<div class="mock">
+    <div class="mock-bar">${m.h||''}</div>
+    ${m.cap?`<div class="mock-cap" style="padding-top:10px">${m.cap}</div>`:''}
+    <div class="mock-list"${m.cap?' style="margin-top:0"':''}>${rows}</div>
+    ${m.note?`<div class="mock-note">${m.note}</div>`:''}
+  </div>`;
+}
+const S=(t,m)=>({t,m});
+
+/* rendu d'une liste de "fact" en accordéon : un point ouvert à la fois,
+   pour afficher moins de texte d'un coup sans rien retirer. */
+function factList(facts,openFirst){
+  return facts.map((f,i)=>
+    `<details class="fact${f.red?' red':''}"${openFirst&&i===0?' open':''}>
+      <summary><span class="idx">${String(i+1).padStart(2,'0')}</span><span>${f.t}</span></summary>
+      <div class="body"><p>${f.p}</p></div>
+    </details>`).join('');
+}
+function wireAccordion(container){
+  const items=[...container.querySelectorAll('details.fact')];
+  items.forEach(d=>d.addEventListener('toggle',()=>{
+    if(d.open) items.forEach(o=>{if(o!==d)o.removeAttribute('open')});
+  }));
+}
+
+/* ===================== logos des applications =====================
+   Tracés issus du projet open source Simple Icons (licence CC0),
+   recolorés pour reproduire l'icône telle qu'elle apparaît sur un
+   téléphone — pour reconnaître l'appli d'un coup d'œil. */
+const APPSVG={
+snap:'<svg viewBox="0 0 24 24"><path fill="#000" d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.913.074-.6.104-1.123.464-1.723.884-.853.599-1.826 1.288-3.294 1.288-.06 0-.119-.015-.18-.015h-.149c-1.468 0-2.427-.675-3.279-1.288-.599-.42-1.107-.779-1.707-.884-.314-.045-.629-.074-.928-.074-.54 0-.958.089-1.272.149-.211.043-.391.074-.54.074-.374 0-.523-.224-.583-.42-.061-.192-.09-.389-.135-.567-.046-.181-.105-.494-.166-.57-1.918-.222-2.95-.642-3.189-1.226-.031-.063-.052-.15-.055-.225-.015-.243.165-.465.42-.509 3.264-.54 4.73-3.879 4.791-4.02l.016-.029c.18-.345.224-.645.119-.869-.195-.434-.884-.658-1.332-.809-.121-.029-.24-.074-.346-.119-1.107-.435-1.257-.93-1.197-1.273.09-.479.674-.793 1.168-.793.146 0 .27.029.383.074.42.194.789.3 1.104.3.234 0 .384-.06.465-.105l-.046-.569c-.098-1.626-.225-3.651.307-4.837C7.392 1.077 10.739.807 11.727.807l.419-.015h.06z"/></svg>',
+tiktok:'<svg viewBox="0 0 24 24"><path fill="#fff" d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>',
+insta:'<svg viewBox="0 0 24 24"><path fill="#fff" d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg>',
+discord:'<svg viewBox="0 0 24 24"><path fill="#fff" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>',
+wa:'<svg viewBox="0 0 24 24"><path fill="#fff" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>',
+yt:'<svg viewBox="0 0 24 24"><path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>',
+roblox:'<svg viewBox="0 0 24 24"><path fill="#fff" d="M18.926 23.998 0 18.892 5.075.002 24 5.108ZM15.348 10.09l-5.282-1.453-1.414 5.273 5.282 1.453z"/></svg>',
+fortnite:'<svg viewBox="0 0 24 24"><path fill="#fff" d="m15.767 14.171.097-5.05H12.4V5.197h3.99L16.872 0H7.128v24l5.271-.985V14.17z"/></svg>',
+mc:'<svg viewBox="0 0 24 24"><path fill="#9CCC65" d="M12 2 20 6.5 12 11 4 6.5Z"/><path fill="#558B2F" d="M4 6.5 12 11v10.5L4 17Z"/><path fill="#7CB342" d="M20 6.5 12 11v10.5L20 17Z"/></svg>'
+};
+function badge(key,mini){return `<span class="applogo ${key}${mini?' mini':''}">${APPSVG[key]}</span>`}
+function jeuxBadge(mini){return `<span class="app-trio">${badge('roblox',mini)}${badge('fortnite',mini)}${badge('mc',mini)}</span>`}
+function appBadge(key,mini){return key==='jeux'?jeuxBadge(mini):badge(key,mini)}
+
+/* ===================== statut de verrouillage =====================
+   La sécurité ne tient pas qu'aux réglages : elle tient à qui peut les
+   annuler. Ce badge dit, pour chaque action, si l'enfant peut la
+   défaire seul — et donc si elle mérite une vérification régulière. */
+const LOCKSVG={
+device:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>',
+partial:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v1.5"/></svg>',
+none:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V9a4 4 0 0 1 7-2.6"/></svg>'
+};
+const LOCKINFO={
+  device:{ic:LOCKSVG.device,t:"Verrouillé par le code parental — votre enfant ne peut pas l'annuler seul."},
+  partial:{ic:LOCKSVG.partial,t:"Verrouillage partiel — revérifiez quand même, certains réglages restent modifiables par l'ado."},
+  none:{ic:LOCKSVG.none,t:"Non verrouillé — votre enfant peut le changer seul, en quelques secondes."}
+};
+function lockBadge(lock){
+  if(!lock||!LOCKINFO[lock])return '';
+  const i=LOCKINFO[lock];
+  return `<div class="locktag ${lock}"><span class="ic">${i.ic}</span><span>${i.t}</span></div>`;
+}
+
+/* ===================== mode téléphone simple ===================== */
+function renderDumb(){
+  const ios=`<div class="step" style="padding:0 0 22px">
+    <span class="chip">Sur iPhone</span>
+    <h2 style="font-size:21px;margin:10px 0 12px">Temps d'écran, poussé au maximum</h2>
+    <div class="why"><b>Pourquoi</b>Le principe : mettre le Temps d'arrêt en continu, puis ne garder que le Téléphone dans les apps toujours autorisées. Tout le reste devient inaccessible sans votre code — y compris les messages, par défaut.</div>
+    ${lockBadge('device')}
+    <div class="dothis">Sur le téléphone de votre enfant</div>
+    <ol>
+      <li>Vérifiez d'abord que le code Temps d'écran est posé (voir le socle) — sans lui, votre enfant annule tout en un geste.</li>
+      <li>${P("Réglages","Temps d'écran","Temps d'arrêt")}
+        ${M({h:"Temps d'arrêt",rows:[["Programmer","ON",1],["Tous les jours","00:00 – 23:59",1]],note:"Ce réglage bloque l'accès à tout ce qui n'est pas dans la liste ci-dessous, à toute heure."})}</li>
+      <li>${P("Réglages","Temps d'écran","Apps toujours autorisées")}
+        ${M({h:"Apps toujours autorisées",rows:[["Téléphone","✓",1],["Messages",""],["Appareil photo",""],["Toutes les autres apps","Retirées",1]],note:"Par défaut, ne cochez que Téléphone. C'est un vrai « appels uniquement » — Messages reste bloqué comme le reste."})}</li>
+    </ol>
+    <p class="tip">Vous voulez qu'il puisse aussi vous écrire, pas seulement appeler ? Cochez Messages en plus dans la même liste — c'est le seul ajout raisonnable, tout le reste doit rester bloqué. Les apps retirées restent installées mais grisées : rien à désinstaller, rien à perdre si vous revenez en arrière.</p>
+  </div>`;
+  const android=`<div class="step" style="padding:0 0 10px">
+    <span class="chip">Sur Android</span>
+    <h2 style="font-size:21px;margin:10px 0 12px">Family Link, appli par appli</h2>
+    <div class="why"><b>Pourquoi</b>Family Link n'a pas un interrupteur unique « tout bloquer », mais le même résultat s'obtient en limitant chaque application à zéro, y compris Messages par défaut — pour un vrai « appels uniquement ».</div>
+    ${lockBadge('device')}
+    <div class="dothis">Sur le téléphone de votre enfant</div>
+    <ol>
+      <li>Vérifiez d'abord que le code parental Family Link est posé (voir le socle).</li>
+      <li>${P("Family Link","Contrôles","Limite d'appli")}
+        ${M({h:"Limites d'app",rows:[["Téléphone","Illimité",1],["Messages","0 min / jour"],["Toutes les autres","0 min / jour",1]],note:"Réglez chaque application sur 0 minute, une par une — Téléphone reste le seul en illimité."})}</li>
+      <li>Plus rapide à refaire après chaque nouvelle app installée : Family Link permet aussi de bloquer une application d'un seul geste depuis sa fiche.</li>
+    </ol>
+    <p class="tip">Vous voulez qu'il puisse aussi vous écrire, pas seulement appeler ? Remontez Messages à « Illimité » — c'est le seul ajout raisonnable, tout le reste doit rester à 0. Si votre enfant installe une nouvelle app entre-temps, elle est déjà bloquée par défaut grâce au socle — vous n'avez qu'à confirmer qu'elle reste à 0 minute.</p>
+  </div>`;
+  document.getElementById('dumbBody').innerHTML=
+    (A.os==='android'?'':ios)+(A.os==='ios'?'':android);
+}
+
+/* ===================== diagnostic ===================== */
+const QUESTIONS=[
+ {id:'age',t:"Quel âge a votre enfant ?",h:"C'est ce qui détermine tout le reste.",opts:[
+   {v:'a',l:"Moins de 11 ans",s:"École primaire, premier appareil"},
+   {v:'b',l:"11 à 12 ans",s:"Entrée au collège"},
+   {v:'c',l:"13 à 14 ans",s:"Âge minimum des plateformes, mais pas la majorité numérique"},
+   {v:'d',l:"15 ans ou plus",s:"Majorité numérique atteinte"},
+   {v:'dumb',l:"Peu importe — je veux tout bloquer sauf les appels",s:"Aucune appli. On saute directement à la configuration."}]},
+ {id:'os',t:"Quel téléphone utilise-t-il ?",h:"Les réglages n'ont rien à voir entre les deux systèmes.",opts:[
+   {v:'ios',l:"iPhone ou iPad",s:"Apple"},
+   {v:'android',l:"Android",s:"Samsung, Xiaomi, Pixel, Oppo…"},
+   {v:'both',l:"Je ne sais pas, ou les deux",s:"On vous montrera les deux parcours"}]},
+ {id:'stade',t:"Où en êtes-vous ?",h:"On ne configure pas un téléphone neuf comme un téléphone en service depuis un an.",opts:[
+   {v:'neuf',l:"Pas encore de téléphone, ou depuis quelques jours",s:"Le meilleur moment. Tout est possible."},
+   {v:'installe',l:"Il l'a depuis des mois",s:"On y va progressivement, sinon ça se retourne contre vous."},
+   {v:'incident',l:"Il s'est déjà passé quelque chose",s:"Message d'un inconnu, contenu choquant, demande de photos…"}]},
+ {id:'apps',t:"Qu'est-ce qui est installé ?",h:"Cochez tout ce qui est sur le téléphone.",multi:true,opts:[
+   {v:'snap',l:"Snapchat"},{v:'tiktok',l:"TikTok"},{v:'insta',l:"Instagram"},{v:'discord',l:"Discord"},
+   {v:'jeux',l:"Roblox, Fortnite, Minecraft ou autre jeu avec chat"},{v:'yt',l:"YouTube"},{v:'wa',l:"WhatsApp"},
+   {v:'rien',l:"Rien de tout ça",s:"Ou je ne sais pas"}]},
+ {id:'cp',t:"Un contrôle parental est-il déjà en place ?",h:"",opts:[
+   {v:'oui',l:"Oui, configuré et revu récemment"},{v:'vieux',l:"Oui, mais posé une fois et jamais retouché"},
+   {v:'non',l:"Non"},{v:'sais',l:"Je ne sais pas, quelqu'un d'autre l'a fait"}]},
+ {id:'code',t:"Votre enfant connaît-il le code de déverrouillage ?",h:"Question déterminante. On y revient dès la première action.",opts:[
+   {v:'oui',l:"Oui, c'est son téléphone"},{v:'non',l:"Non, il a son code, j'ai le mien"},{v:'sais',l:"Je crois qu'il le connaît"}]}
+];
+let qi=0,A={},lastView='vHome';
+function start(){qi=0;A={};store.del('progress');show('vDiag');renderQ()}
+function reset(){store.del('answers');store.del('progress');A={};qi=0;show('vHome')}
+function renderQ(){
+  const q=QUESTIONS[qi];
+  document.getElementById('qCount').textContent=`Question ${qi+1} / ${QUESTIONS.length}`;
+  document.getElementById('qFill').style.width=(qi/QUESTIONS.length*100)+'%';
+  document.getElementById('qBack').style.visibility=qi?'visible':'hidden';
+  document.getElementById('qTitle').textContent=q.t;
+  const h=document.getElementById('qHint');h.textContent=q.h;h.style.display=q.h?'block':'none';
+const GAMEPAD='<svg viewBox="0 0 24 24" fill="none" stroke="var(--ink-2)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:60%;height:60%"><rect x="2" y="6" width="20" height="12" rx="4"/><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><circle cx="15" cy="13" r="1"/><circle cx="18" cy="11" r="1"/></svg>';
+const box=document.getElementById('qOpts');box.innerHTML='';
+  const cur=A[q.id];
+  q.opts.forEach(o=>{
+    const on=q.multi?(cur||[]).includes(o.v):cur===o.v;
+    const b=document.createElement('button');
+    b.className='opt';b.setAttribute('aria-pressed',on);
+    let logo='';
+    if(q.id==='apps'){
+      if(APPSVG[o.v]) logo=appBadge(o.v,true);
+      else if(o.v==='jeux') logo=`<span class="applogo mini" style="background:var(--paper)">${GAMEPAD}</span>`;
+    }
+    b.innerHTML=`<span class="box"></span>${logo}<span><span class="lab">${o.l}</span>${o.s?`<span class="sub">${o.s}</span>`:''}</span>`;
+    b.onclick=()=>pick(q,o.v);box.appendChild(b);
+  });
+  document.getElementById('qNext').classList.toggle('hidden',!q.multi);
+  window.scrollTo(0,0);
+}
+function pick(q,v){
+  if(q.multi){let s=A[q.id]||[];
+    if(v==='rien')s=s.includes('rien')?[]:['rien'];
+    else{s=s.filter(x=>x!=='rien');s=s.includes(v)?s.filter(x=>x!==v):[...s,v]}
+    A[q.id]=s;renderQ();
+  }else{A[q.id]=v;setTimeout(next,140)}
+}
+function next(){
+  qi++;
+  if(A.age==='dumb'&&qi===2){store.set('answers',A);lastView='vHome';show('vDumb');return}
+  qi<QUESTIONS.length?renderQ():buildReport();
+}
+function back(){if(qi){qi--;renderQ()}}
+
+/* ===================== FORMATION : fiches par plateforme ===================== */
+const BRIEFS={
+snap:{n:"Snapchat",sub:"L'application la plus utilisée par les prédateurs, et ce n'est pas un hasard.",
+ facts:[
+ {t:"Tout s'efface, et c'est le principe",p:"Les messages disparaissent après lecture, les snaps aussi. Ce n'est pas un bug de sécurité, c'est le produit. Conséquence directe : quand vous découvrez quelque chose, la preuve a souvent déjà disparu. C'est pour ça qu'un signalement rapide compte plus qu'une enquête minutieuse."},
+ {t:"Une capture d'écran envoie une notification",p:"Si votre enfant ou vous faites une capture d'une conversation, l'autre personne est prévenue immédiatement. Un prédateur averti supprime son compte dans la minute. Photographiez toujours l'écran avec un autre téléphone.",red:true},
+ {t:"La Snap Map diffuse la position en direct",p:"Elle s'active parfois sans que l'enfant s'en rende compte, et elle affiche sa position sur une carte pour tous ses contacts. Le Mode Fantôme la coupe. C'est le premier réglage à vérifier, avant tous les autres."},
+ {t:"Les flammes sont un levier de manipulation",p:"La « flamme » compte les jours d'échange consécutifs avec un contact. Les ados y tiennent énormément et acceptent des inconnus pour les faire monter. Un adulte qui veut entrer en contact le sait et s'en sert. Si votre enfant vous parle de ses flammes, c'est une bonne occasion de parler de qui est en face."},
+ {t:"« Ajout rapide » suggère votre enfant à des inconnus",p:"La fonction propose son compte à des gens qui ne le connaissent pas, à partir de contacts communs approximatifs. C'est une porte d'entrée qu'on peut fermer en un réglage."}],
+ say:"Tu peux me montrer tes flammes ? C'est qui, celui-là, tu le connais comment ?"},
+
+tiktok:{n:"TikTok",sub:"Le risque n'est pas tellement les vidéos. C'est ce qu'il y a autour.",
+ facts:[
+ {t:"Les commentaires sont le vrai point de contact",p:"Un compte public reçoit des commentaires de n'importe qui. C'est souvent là que commence l'approche : un compliment, puis une invitation à discuter ailleurs. Le compte privé ferme cette porte."},
+ {t:"Les lives permettent d'envoyer de l'argent",p:"Pendant un direct, les spectateurs peuvent envoyer des cadeaux virtuels qui se convertissent en argent. Un adulte qui offre régulièrement des cadeaux à un mineur en direct crée une dette et une relation. C'est un schéma documenté."},
+ {t:"Le compte peut être public sans que le parent le sache",p:"Le réglage se change en deux touches. Sans la Connexion Famille, qui verrouille ce paramètre depuis votre téléphone, il redeviendra public un jour ou l'autre."}],
+ say:"Ton compte est en privé ? Montre-moi, je veux juste voir comment c'est réglé."},
+
+insta:{n:"Instagram",sub:"Moins direct, mais les stories sont une porte ouverte.",
+ facts:[
+ {t:"Répondre à une story ouvre une conversation privée",p:"N'importe qui pouvant voir une story peut y répondre, et cette réponse arrive en message privé. Sur un compte public, c'est un canal d'entrée permanent."},
+ {t:"Le mode éphémère notifie les captures",p:"Comme sur Snapchat, une capture d'un contenu éphémère alerte l'expéditeur. Même consigne : photographier avec un autre appareil.",red:true},
+ {t:"La supervision existe et vous alerte",p:"Elle vous signale les nouveaux comptes suivis et les signalements effectués, sans jamais vous donner accès aux messages. C'est le bon équilibre : vous voyez les changements, pas les conversations."}],
+ say:"On met la supervision ? Je verrai juste qui tu suis de nouveau, pas tes messages."},
+
+discord:{n:"Discord",sub:"L'angle mort le plus important. Presque aucun parent ne le connaît.",
+ facts:[
+ {t:"Partager un serveur suffit pour envoyer un message privé",p:"Votre enfant rejoint un serveur public de 4000 personnes autour d'un jeu. Par défaut, chacune de ces 4000 personnes peut lui écrire en privé. C'est le réglage le plus important de l'application."},
+ {t:"Les serveurs privés ne sont modérés par personne",p:"Un serveur créé par un particulier n'a d'autres règles que celles de son créateur. Discord n'y intervient qu'après signalement."},
+ {t:"C'est souvent la deuxième étape",p:"Le contact démarre ailleurs — un jeu, TikTok — puis on propose de « continuer sur Discord ». Ce déplacement est le signal le plus fiable qui existe, et il vaut la peine de l'expliquer à votre enfant tel quel.",red:true}],
+ say:"Si quelqu'un te propose de continuer à parler sur une autre appli, c'est le moment où tu viens me voir. Toujours."},
+
+jeux:{n:"Roblox, Fortnite, Minecraft",sub:"Chez les moins de 13 ans, c'est ici que ça commence. Pas sur les réseaux sociaux.",
+ facts:[
+ {t:"L'adulte est invisible derrière un avatar",p:"Rien ne distingue un joueur de 40 ans d'un joueur de 10 ans. Un enfant à qui on a appris à se méfier des inconnus ne perçoit pas un compagnon de jeu comme un inconnu."},
+ {t:"La monnaie du jeu sert de cadeau",p:"Robux, V-Bucks, skins : offrir crée une dette et un lien, exactement comme des cadeaux dans la vie réelle. Un adulte qui offre régulièrement des objets à votre enfant dans un jeu, c'est un signal, pas une gentillesse."},
+ {t:"Le chat vocal passe souvent hors du jeu",p:"Beaucoup de groupes utilisent le salon vocal d'une console ou de Discord plutôt que le chat du jeu. Couper le chat dans Roblox ne coupe donc pas forcément la conversation."},
+ {t:"La liste d'amis grossit toute seule",p:"Elle atteint vite plusieurs dizaines de comptes que l'enfant serait incapable d'identifier. La passer en revue avec lui, nom par nom, est l'exercice le plus utile que vous puissiez faire."}],
+ say:"On regarde ta liste d'amis ensemble ? Pour chacun, tu me dis c'est qui."},
+
+wa:{n:"WhatsApp",sub:"Peu de contacts entrants, mais votre numéro circule.",
+ facts:[
+ {t:"Un lien d'invitation à un groupe expose le numéro",p:"Rejoindre un groupe rend le numéro de téléphone visible par tous les membres. Un lien de groupe qui circule sur un forum, et le numéro se retrouve n'importe où."},
+ {t:"C'est une destination, pas un point de départ",p:"On y arrive rarement par hasard : on y est amené depuis une autre application. Recevoir un message WhatsApp d'un inconnu signifie que le contact a déjà eu lieu ailleurs.",red:true}],
+ say:"Si un numéro que tu ne connais pas t'écrit, tu me le montres avant de répondre."},
+
+yt:{n:"YouTube",sub:"Le contenu, mais aussi les commentaires et les directs.",
+ facts:[
+ {t:"Les commentaires et les chats en direct sont des espaces ouverts",p:"On oublie souvent qu'un enfant qui commente peut être contacté en retour, y compris par message privé sur d'autres plateformes à partir de son pseudo."},
+ {t:"L'algorithme dérive vite",p:"Quelques vidéos suffisent pour glisser vers des contenus inadaptés. Le mode restreint filtre grossièrement, il ne remplace pas la conversation."}],
+ say:"Tu regardes quoi en ce moment ? Montre-moi une vidéo que t'as aimée."}
+};
+
+/* ===================== ACTIONS ===================== */
+const ACTIONS=[
+/* ---- SOCLE iOS ---- */
+{id:'ios-code',os:'ios',crit:1,min:3,cat:'Socle',
+ t:"Mettre un code Temps d'écran différent du code du téléphone",
+ why:"C'est la faille numéro un, et de très loin. Si le code qui verrouille les restrictions est le même que celui qui déverrouille le téléphone, votre enfant désactive l'intégralité de vos réglages en quinze secondes. Tout ce que vous ferez ensuite ne tiendra pas.",
+ steps:[
+  S("Ouvrez les réglages du téléphone de votre enfant et allez dans Temps d'écran.",
+    {h:"Temps d'écran",rows:[["Temps d'arrêt",""],["Limites d'app",""],["Sécurité des communications",""],["Code pour « Temps d'écran »","Non défini",1]]}),
+  S("Choisissez un code à 4 chiffres qu'il ne connaît pas, et qui n'est pas une date de naissance de la famille.",null),
+  S("Renseignez un identifiant Apple de récupération. Sans lui, code oublié = réinitialisation complète du téléphone.",null),
+  S("Notez le code ailleurs que dans les notes du téléphone.",null)],
+ tip:"Faites le test devant lui : demandez-lui d'essayer de désactiver une restriction. S'il y arrive, l'étape n'est pas faite."},
+
+{id:'ios-compte',os:'ios',crit:1,min:2,cat:'Socle',lock:'device',
+ t:"Verrouiller les modifications de compte et de date de naissance",
+ why:"Sans ça, l'enfant se redéclare majeur et les plateformes lui appliquent les réglages d'un adulte. Avec la vérification d'âge qui se met en place, c'est le contournement qui va exploser.",
+ steps:[
+  S(P("Réglages","Temps d'écran","Restrictions de contenu et de confidentialité"),null),
+  S("Activez l'interrupteur en haut, puis descendez jusqu'à la section Autoriser les modifications.",
+    {h:"Restrictions",cap:"Autoriser les modifications",rows:[["Modifications du code","Ne pas autoriser",1],["Modifications du compte","Ne pas autoriser",1],["Modifications des données cellulaires","Autoriser"]]})],
+ tip:"C'est cette section que les enfants trouvent en premier quand ils cherchent à contourner. La verrouiller ferme la porte de sortie."},
+
+{id:'ios-apps',os:'ios',crit:1,min:2,cat:'Socle',lock:'device',
+ t:"Empêcher l'installation et la suppression d'applications",
+ why:"Le contournement le plus banal : supprimer l'app filtrée, la réinstaller le lendemain avec un compte neuf, la supprimer avant de rendre le téléphone. Bloquer la suppression est aussi important que bloquer l'installation.",
+ steps:[
+  S(P("Réglages","Temps d'écran","Restrictions de contenu et de confidentialité","Achats dans iTunes et l'App Store"),null),
+  S("Réglez les trois lignes comme ceci.",
+    {h:"Achats iTunes et App Store",rows:[["Installation d'apps","Ne pas autoriser",1],["Suppression d'apps","Ne pas autoriser",1],["Achats intégrés","Ne pas autoriser",1]],
+     note:"« Suppression d'apps » est celle que tout le monde oublie. C'est pourtant celle qui empêche le cycle supprimer / réinstaller."})]},
+
+{id:'ios-web',os:'ios',min:3,cat:'Socle',lock:'device',
+ t:"Filtrer le contenu web et les applications pour adultes",
+ why:"Deux raisons distinctes, un seul écran de réglages. D'abord la pornographie : un enfant peut y accéder par une simple recherche, sans jamais installer d'application dédiée — c'est la porte d'entrée la plus directe et la plus fréquente, et c'est ce réglage qui la ferme. Ensuite le contournement d'applications bloquées : interdire l'app TikTok sans bloquer tiktok.com ne sert à rien, la version web fonctionne dans Safari.",
+ steps:[
+  S(P("Réglages","Temps d'écran","Restrictions de contenu et de confidentialité","Restrictions relatives au contenu"),null),
+  S("Plafonnez d'abord la note des applications autorisées, selon l'âge de votre enfant.",
+    {h:"Restrictions relatives au contenu",cap:"Applications",rows:[["Autoriser les applications classées","12+",1]],
+     note:"Les applications notées au-dessus deviennent invisibles dans l'App Store et se ferment si elles sont déjà installées. Baissez la note pour un enfant plus jeune."}),
+  S("Puis, dans le même écran, descendez jusqu'à Contenu web et ajoutez manuellement les sites à ne jamais autoriser.",
+    {h:"Contenu web",rows:[["Accès illimité",""],["Limiter les sites web pour adultes","✓",1],["Sites web autorisés",""]],
+     note:"C'est la protection la plus directe contre la pornographie en ligne. Ajoutez aussi dans « Ne jamais autoriser » chaque plateforme que vous bloquez par ailleurs."}),
+  S("Vérifiez qu'aucun autre navigateur n'est installé — Chrome, Firefox, Brave, Opera contournent le filtre.",null)],
+ tip:"Ce filtre couvre la recherche et la navigation web, mais pas ce qui peut apparaître dans le fil d'une application déjà installée (TikTok, Instagram) — c'est un point à surveiller autrement, notamment via les rappels réguliers. Pour une protection à l'échelle du foyer entier (autres appareils, invités), un filtre au niveau de votre box internet complète utilement ce réglage."},
+
+{id:'ios-comm',os:'ios',min:2,cat:'Socle',lock:'device',
+ t:"Activer la sécurité des communications",
+ why:"Détection des photos de nudité directement sur l'appareil, à l'envoi comme à la réception. L'analyse se fait en local : aucune photo n'est envoyée à Apple, ni à vous. C'est la seule protection de ce type qui n'implique pas de lire les messages de votre enfant.",
+ steps:[
+  S(P("Réglages","Temps d'écran","Sécurité des communications"),null),
+  S("Activez l'analyse des photos et vidéos sensibles.",
+    {h:"Sécurité des communications",rows:[["Vérifier les photos et vidéos sensibles","ON",1]],
+     note:"L'enfant reçoit un avertissement et des conseils avant d'ouvrir ou d'envoyer. Vous n'êtes pas notifié du contenu."})],
+ tip:"Dites-lui que c'est activé et pourquoi. Une protection découverte en cachette se vit comme une trahison ; annoncée, elle se vit comme une règle."},
+
+{id:'ios-limites',os:'ios',min:2,cat:'Socle',lock:'device',
+ t:"Limiter qui peut le contacter",
+ why:"Réduit la surface d'attaque : un inconnu ne peut pas simplement tomber sur le numéro et lancer une conversation.",
+ steps:[
+  S(P("Réglages","Temps d'écran","Limites de communication"),null),
+  S("Réglez les deux périodes.",
+    {h:"Limites de communication",rows:[["Pendant le temps d'écran","Contacts uniquement",1],["Pendant le temps d'arrêt","Contacts spécifiques",1]]})]},
+
+/* ---- SOCLE ANDROID ---- */
+{id:'and-fl',os:'android',crit:1,min:6,cat:'Socle',
+ t:"Installer Family Link et superviser réellement le compte",
+ why:"Sur Android, tout passe par un compte Google supervisé. Sans ça, les réglages sont posés sur le téléphone et non sur le compte : une réinitialisation ou un nouveau compte efface tout d'un coup.",
+ steps:[
+  S("Installez Family Link sur votre téléphone à vous, pas sur le sien.",null),
+  S("Sur le téléphone de l'enfant, créez ou rattachez son compte Google avec sa vraie date de naissance.",null),
+  S("Vérifiez que l'appareil apparaît bien comme supervisé, pas seulement le compte.",
+    {h:"Family Link",rows:[["Appareil de l'enfant","Supervisé",1],["Compte Google","Supervisé",1],["Temps d'écran",""],["Contrôles",""]]})],
+ tip:"Si l'enfant a créé son compte seul avec une fausse date de naissance, corrigez-la : sinon Google le traite comme un adulte, quoi que vous régliez ensuite."},
+
+{id:'and-code',os:'android',crit:1,min:2,cat:'Socle',
+ t:"Choisir un code parental distinct",
+ why:"Même faille que sur iPhone : si le code parental est celui du téléphone, les restrictions sont décoratives.",
+ steps:[
+  S("Dans Family Link côté parent, définissez un code parental que l'enfant ne connaît pas.",null),
+  S("Vérifiez qu'il est différent du code de déverrouillage et du schéma de l'enfant.",null)]},
+
+{id:'and-install',os:'android',crit:1,min:3,cat:'Socle',lock:'device',
+ t:"Exiger votre validation pour toute installation",
+ why:"Sans cette étape, l'enfant réinstalle en deux minutes tout ce que vous avez retiré.",
+ steps:[
+  S(P("Family Link","Contrôles","Contrôles du contenu","Google Play"),null),
+  S("Exigez l'autorisation pour tout le contenu et posez les restrictions par âge.",
+    {h:"Google Play",rows:[["Demander l'autorisation","Tout le contenu",1],["Applications et jeux","PEGI 7",1],["Films","Tous publics"],["Achats intégrés","Toujours demander",1]]}),
+  S("Rendez Family Link administrateur de l'appareil pour empêcher sa désinstallation.",null)]},
+
+{id:'and-web',os:'android',min:3,cat:'Socle',lock:'device',
+ t:"Filtrer le contenu web et les applications pour adultes",
+ why:"Deux raisons, un seul écran. D'abord la pornographie : SafeSearch et le blocage des sites explicites sont la première barrière contre l'accès direct depuis une recherche — c'est la porte d'entrée la plus fréquente. Ensuite le contournement : une app bloquée reste accessible par son site web si le navigateur n'est pas filtré.",
+ steps:[
+  S(P("Family Link","Contrôles","Contrôles du contenu"),null),
+  S("Réglez Chrome et la recherche.",
+    {h:"Contrôles du contenu",rows:[["Google Chrome","Bloquer les sites explicites",1],["Recherche Google","SafeSearch activé",1],["YouTube","Expérience supervisée",1]],
+     note:"« Bloquer les sites explicites » et SafeSearch sont la protection la plus directe contre la pornographie en ligne."}),
+  S("Désinstallez les navigateurs alternatifs : Brave, Firefox, Opera, et Samsung Internet s'il n'est pas filtrable.",null)],
+ tip:"Ce filtre couvre la recherche et la navigation web, mais pas ce qui peut apparaître dans le fil d'une application déjà installée (TikTok, Instagram) — c'est un point à surveiller autrement, notamment via les rappels réguliers. Pour une protection à l'échelle du foyer entier (autres appareils, invités), un filtre au niveau de votre box internet complète utilement ce réglage."},
+
+{id:'and-sources',os:'android',crit:1,min:3,cat:'Socle',lock:'device',
+ t:"Bloquer l'installation d'applications hors Play Store",
+ why:"Le contournement propre à Android : télécharger un fichier d'installation depuis le web et passer complètement à côté de vos restrictions Play Store. C'est expliqué dans des tutoriels que n'importe quel collégien trouve en une recherche.",
+ steps:[
+  S(P("Réglages","Applications","Accès spécial des applications","Installer des applications inconnues"),null),
+  S("Passez chaque application sur non autorisé, surtout les navigateurs et les gestionnaires de fichiers.",
+    {h:"Installer des apps inconnues",rows:[["Chrome","Non autorisé",1],["Mes fichiers","Non autorisé",1],["Messages","Non autorisé",1]]}),
+  S("Vérifiez que Play Protect est actif dans les réglages de sécurité.",null)]},
+
+{id:'and-invite',os:'android',min:2,cat:'Socle',lock:'device',
+ t:"Supprimer les profils invité et secondaires",
+ why:"Un second profil sur l'appareil, c'est un téléphone entièrement neuf sans aucune de vos restrictions. Beaucoup de parents ignorent que ça existe.",
+ steps:[
+  S(P("Réglages","Système","Utilisateurs multiples"),null),
+  S("Supprimez tout profil autre que celui de l'enfant et désactivez le mode invité.",
+    {h:"Utilisateurs multiples",rows:[["Utiliser plusieurs comptes","OFF",1],["Invité","Supprimer",1]]})]},
+
+/* ---- PLATEFORMES ---- */
+{id:'snap-fc',app:'snap',os:'all',crit:1,min:5,cat:'Snapchat',lock:'none',
+ t:"Activer le Family Center de Snapchat",
+ why:"C'est l'outil le plus utile et le plus ignoré. Il vous montre avec qui votre enfant a échangé sur les 7 derniers jours et ses nouveaux contacts, sans jamais vous donner le contenu des messages. Un adulte inconnu qui apparaît dans la liste : c'est exactement le signal qui compte.",
+ steps:[
+  S("Créez votre propre compte Snapchat si vous n'en avez pas. Il faut avoir 25 ans ou plus pour ouvrir un Family Center.",null),
+  S(P("Profil","Roue crantée","Family Center","=Inviter"),
+    {h:"Family Center",rows:[["Amis","Voir la liste",1],["Nouveaux contacts","3 cette semaine",1],["Temps passé",""],["Signaler un compte",""]],
+     note:"Vous voyez avec qui, jamais quoi. C'est volontaire, et c'est ce qui rend l'outil acceptable pour l'ado."}),
+  S("Votre enfant doit accepter l'invitation depuis son téléphone. Il en sera donc informé.",null),
+  S("Prenez l'habitude de regarder la liste des nouveaux contacts une fois par semaine.",null)],
+ tip:"Impossible à faire en cachette, il reçoit l'invitation. Présentez-le comme la condition pour garder l'application, pas comme une surveillance. Point important : votre enfant peut couper le Family Center lui-même à tout moment, sans votre accord — vérifiez de temps en temps qu'il est toujours actif."},
+
+{id:'snap-map',app:'snap',os:'all',crit:1,min:2,cat:'Snapchat',lock:'none',
+ t:"Passer la Snap Map en Mode Fantôme",
+ why:"La Snap Map diffuse la position en temps réel à tous les contacts. Elle s'active parfois par erreur et l'enfant ne s'en rend pas compte. C'est le réglage à vérifier en tout premier.",
+ steps:[
+  S("Ouvrez la carte, puis la roue crantée en haut à droite.",
+    {h:"Réglages de la carte",rows:[["Mode Fantôme","ON",1],["Durée","Jusqu'à désactivation",1],["Qui peut voir ma position","Personne",1]]}),
+  S("Effacez l'historique de localisation dans le même écran.",null)]},
+
+{id:'snap-contact',app:'snap',os:'all',min:3,cat:'Snapchat',lock:'none',
+ t:"Fermer les contacts entrants",
+ why:"Par défaut, un inconnu peut trouver votre enfant via les suggestions et lui écrire. C'est le point d'entrée classique, et il se ferme en trois réglages.",
+ steps:[
+  S(P("Profil","Roue crantée","Confidentialité"),null),
+  S("Réglez les trois lignes suivantes.",
+    {h:"Confidentialité",rows:[["Me contacter","Mes amis",1],["Me voir dans « Ajout rapide »","OFF",1],["Voir ma Story","Mes amis",1]]}),
+  S("Retirez My AI du fil : appui long sur la conversation, puis supprimer.",null)]},
+
+{id:'tiktok-fp',app:'tiktok',os:'all',crit:1,min:4,cat:'TikTok',lock:'partial',
+ t:"Activer la Connexion Famille sur TikTok",
+ why:"Elle relie votre compte au sien et vous laisse verrouiller les réglages depuis votre téléphone. Sans elle, il les remet comme il veut dès le lendemain.",
+ steps:[
+  S(P("Profil","Menu ☰","Paramètres et confidentialité","Connexion Famille"),null),
+  S("Appairez les deux téléphones, puis verrouillez ces réglages.",
+    {h:"Connexion Famille",rows:[["Compte privé","ON",1],["Messages directs","Désactivé",1],["Contenu restreint","ON",1],["Temps d'écran","1 h / jour"]]})]},
+
+{id:'tiktok-priv',app:'tiktok',os:'all',min:3,cat:'TikTok',lock:'partial',
+ t:"Verrouiller la confidentialité du compte",
+ why:"Un compte public expose les vidéos, les commentaires et la messagerie à n'importe qui. Les commentaires sont le premier canal d'approche.",
+ steps:[
+  S(P("Paramètres et confidentialité","Confidentialité"),null),
+  S("Réglez ces quatre lignes.",
+    {h:"Confidentialité",rows:[["Compte privé","ON",1],["Commentaires","Amis",1],["Duo et Collage","Désactivé",1],["Téléchargement des vidéos","OFF",1]]})]},
+
+{id:'insta',app:'insta',os:'all',min:4,cat:'Instagram',lock:'partial',
+ t:"Passer en compte supervisé sur Instagram",
+ why:"La supervision vous alerte sur les nouveaux abonnements et les signalements, sans lire les messages. Le compte privé ferme la messagerie aux inconnus et coupe les réponses aux stories.",
+ steps:[
+  S(P("Paramètres","Supervision","=Ajouter un parent"),null),
+  S("Puis verrouillez la confidentialité.",
+    {h:"Confidentialité",rows:[["Compte privé","ON",1],["Demandes de message","Ne pas recevoir",1],["Réponses aux stories","Abonnés uniquement",1],["Contenu suggéré","Limiter",1]]})]},
+
+{id:'discord',app:'discord',os:'all',crit:1,min:4,cat:'Discord',lock:'none',
+ t:"Fermer Discord aux inconnus",
+ why:"C'est l'angle mort majeur. Votre enfant rejoint un serveur public de plusieurs milliers de personnes autour d'un jeu, et par défaut chacune d'elles peut lui écrire en privé. Discord est très souvent la deuxième étape, celle où la conversation devient privée.",
+ steps:[
+  S(P("Paramètres","Confidentialité et sécurité"),null),
+  S("Ces quatre réglages ferment l'essentiel.",
+    {h:"Confidentialité et sécurité",rows:[["Filtre de contenu sensible","Analyser tout",1],["MP des membres du serveur","Désactivé",1],["Amis d'amis","OFF",1],["Membres du serveur","OFF",1]],
+     note:"Les deux derniers sont dans « Qui peut vous ajouter en ami »."}),
+  S("Activez aussi le Family Center de Discord, qui vous liste les serveurs rejoints et les nouveaux amis.",null)]},
+
+{id:'jeux',app:'jeux',os:'all',crit:1,min:6,cat:'Jeux',lock:'device',
+ t:"Couper ou restreindre le chat dans les jeux",
+ why:"Chez les moins de 13 ans, le premier contact ne se fait presque jamais sur un réseau social : il se fait dans Roblox, Fortnite ou Minecraft, où l'adulte est parfaitement invisible derrière un avatar. Un profil qui bloque TikTok mais laisse le chat de Roblox ouvert donne un faux sentiment de sécurité.",
+ steps:[
+  S("Roblox : "+P("Paramètres","Contrôle parental","=Ajouter un code parental"),
+    {h:"Roblox — Confidentialité",rows:[["Qui peut m'envoyer un message","Personne",1],["Qui peut discuter en jeu","Amis",1],["Qui peut m'inviter","Amis",1],["Code parental","Défini",1]]}),
+  S("Fortnite : "+P("Paramètres","Contrôle parental","=Chat vocal et texte désactivés"),null),
+  S("Minecraft : désactivez le multijoueur et les serveurs tiers depuis le compte Microsoft de l'enfant.",null),
+  S("Passez en revue la liste d'amis dans chaque jeu et supprimez tous les comptes que votre enfant ne sait pas identifier dans la vraie vie.",null)],
+ tip:"Posez la question à voix haute pour chaque nom : « lui, c'est qui ? ». Les réponses floues sont l'information. Bonne nouvelle ici : les trois protègent ces réglages par un code que vous seul connaissez — contrairement à Snapchat ou Discord, votre enfant ne peut pas les rouvrir seul."},
+
+{id:'wa',app:'wa',os:'all',min:2,cat:'WhatsApp',lock:'none',
+ t:"Restreindre WhatsApp",
+ why:"Moins exposé, mais c'est la destination classique une fois le contact établi ailleurs. Et un lien de groupe qui circule expose le numéro de votre enfant à tous ses membres.",
+ steps:[
+  S(P("Réglages","Confidentialité"),null),
+  S("Réglez ces quatre lignes.",
+    {h:"Confidentialité",rows:[["Qui peut m'ajouter à un groupe","Mes contacts",1],["Photo de profil","Mes contacts",1],["Dernière connexion","Personne",1],["Bloquer les inconnus","ON",1]]})]},
+
+{id:'yt',app:'yt',os:'all',min:3,cat:'YouTube',lock:'partial',
+ t:"Encadrer YouTube",
+ why:"Les commentaires et les chats en direct sont des espaces de contact ouverts, presque toujours oubliés dans les configurations.",
+ steps:[
+  S("Moins de 13 ans : utilisez YouTube Kids, ou une expérience supervisée via Family Link.",null),
+  S(P("Paramètres","Général","Mode restreint","=Activer"),null),
+  S("Vérifiez que l'enfant n'est pas connecté à un compte Google adulte dans l'application.",null)]},
+
+/* ---- AUDIT ---- */
+{id:'audit-comptes',os:'all',crit:1,min:5,cat:'Audit',
+ t:"Chercher les comptes secondaires",
+ why:"C'est le contournement que personne ne vérifie. Un deuxième compte sur la même application est invisible depuis vos réglages : les restrictions du compte supervisé ne s'y appliquent pas du tout.",
+ steps:[
+  S("Dans chaque application, ouvrez le profil et cherchez « changer de compte » : la liste des comptes connectés y apparaît.",null),
+  S("Sur iPhone : "+P("App Store","Profil","Achetés")+" affiche tout ce qui a été téléchargé un jour, même supprimé depuis.",null),
+  S("Sur Android : "+P("Play Store","Profil","Gérer les applications","Bibliothèque"),null),
+  S("Ouvrez la boîte mail de l'enfant : une inscription laisse toujours un e-mail de bienvenue.",null),
+  S("Vérifiez la date de naissance déclarée dans chaque application ouverte.",null)]},
+
+{id:'audit-vpn',os:'all',min:2,cat:'Audit',
+ t:"Vérifier l'absence de VPN",
+ why:"Un VPN fait sauter la plupart des filtres réseau. Un enfant de 12 ans en installe un en trois minutes en suivant un tutoriel.",
+ steps:[
+  S("Sur iPhone : "+P("Réglages","Général","VPN et gestion de l'appareil"),null),
+  S("Sur Android : "+P("Réglages","Connexions","Plus de paramètres","VPN"),null),
+  S("Supprimez tout profil de configuration que vous n'avez pas installé vous-même.",null)]},
+
+{id:'audit-cache',os:'all',min:3,cat:'Audit',
+ t:"Repérer les applications déguisées",
+ why:"Il existe des applications qui se présentent comme une calculatrice ou une lampe torche et cachent un espace verrouillé par code. Elles sont vendues comme ça et se trouvent en cherchant leur nom exact.",
+ steps:[
+  S("Faites défiler tous les écrans d'accueil, y compris la bibliothèque d'apps et l'intérieur des dossiers.",null),
+  S("Méfiez-vous des doublons : deux calculatrices, deux applications photo, deux lampes torches.",null),
+  S("Utilisez la recherche du téléphone en tapant le nom d'une plateforme : elle la trouve même masquée dans un dossier.",null)]},
+
+{id:'audit-ia',os:'all',min:3,cat:'Audit',
+ t:"Encadrer l'accès aux IA conversationnelles",
+ why:"Un enfant qui veut contourner un réglage peut simplement le demander à une IA — beaucoup répondent volontiers à « comment repasser ma position visible sur Snapchat » ou « comment supprimer Family Link ». Certaines IA posent aussi un risque à part : disponibles 24h/24, elles peuvent devenir un confident de substitution, sans le recul d'un adulte.",
+ steps:[
+  S("Ajoutez les principaux sites d'IA conversationnelle (chatgpt.com, gemini.google.com, character.ai...) à la liste « ne jamais autoriser » du filtre web, au même endroit que les autres sites déjà bloqués.",null),
+  S("Toute nouvelle application d'IA suit la même règle que les autres applications : elle ne s'installe pas sans votre autorisation. C'est déjà le cas grâce au socle.",null),
+  S("Vérifiez si une IA est déjà intégrée à une application existante — c'est le cas de My AI sur Snapchat, déjà retiré plus haut dans ce plan.",null)],
+ tip:"Bloquer « l'IA » en bloc n'est pas réaliste : elle est désormais intégrée presque partout, y compris dans les moteurs de recherche. Le filtre web plus la conversation directe protègent mieux qu'une interdiction totale, de toute façon impossible à vérifier."},
+
+/* ---- ACCORD ---- */
+{id:'ado-pacte',os:'all',min:10,cat:'Accord',
+ t:"Poser un accord plutôt qu'un verrou",
+ why:"À partir de 15 ans, le contrôle technique devient largement symbolique : il sait le contourner, et le forcer vous coûte le seul canal qui compte vraiment, celui où il vient vous parler quand ça dérape.",
+ steps:[
+  S("Trois règles, pas quinze. Par exemple : pas de compte public, aucun rendez-vous physique avec quelqu'un rencontré en ligne sans vous le dire, téléphone hors de la chambre la nuit.",null),
+  S("Dites explicitement ce que vous ne ferez pas : ne pas lire ses messages, ne pas fouiller en son absence.",null),
+  S("Ajoutez la clause qui compte : s'il vous signale un problème, il ne perd pas son téléphone.",null),
+  S("Convenez d'une révision dans trois mois plutôt que d'un règlement définitif.",null)],
+ tip:"Le seul indicateur qui prédit vraiment la sécurité en ligne d'un ado, c'est sa probabilité de venir vous parler quand quelque chose se passe mal."}
+];
+
+/* ===================== filet de sécurité : l'intention derrière le chemin =====================
+   Si un libellé de menu a changé, le parent cherche l'intention et retrouve le réglage.
+   C'est ce qui empêche le guide de devenir inutilisable à chaque mise à jour. */
+const VERIF='08/2026';
+const FIND={
+ 'ios-code':"le réglage qui protège les restrictions par un code, dans Temps d'écran",
+ 'ios-compte':"la section qui interdit de modifier le compte et le code de l'appareil",
+ 'ios-apps':"les autorisations d'installation et de suppression d'applications",
+ 'ios-web':"le plafond de note des applications, et le filtre de contenu web avec sa liste de sites jamais autorisés",
+ 'ios-comm':"l'analyse des photos sensibles effectuée sur l'appareil",
+ 'ios-limites':"la limitation des personnes autorisées à le contacter",
+ 'and-fl':"la supervision du compte et de l'appareil dans Family Link",
+ 'and-code':"le code parental de Family Link, côté parent",
+ 'and-install':"l'autorisation obligatoire avant toute installation depuis le Play Store",
+ 'and-web':"le blocage des sites explicites et SafeSearch dans les contrôles de contenu",
+ 'and-sources':"l'autorisation d'installer des applications de sources inconnues, à couper partout",
+ 'and-invite':"la gestion des utilisateurs multiples et du mode invité",
+ 'snap-fc':"l'espace famille, qui relie votre compte au sien",
+ 'snap-map':"le mode qui masque sa position sur la carte",
+ 'snap-contact':"les réglages de confidentialité qui limitent qui peut le contacter et le trouver",
+ 'tiktok-fp':"la fonction qui appaire votre compte au sien pour verrouiller ses réglages",
+ 'tiktok-priv':"le passage du compte en privé et la limitation des commentaires",
+ 'insta':"la supervision parentale et le passage du compte en privé",
+ 'discord':"les réglages qui empêchent les membres d'un serveur de lui écrire en privé",
+ 'jeux':"le contrôle parental de chaque jeu, et la limitation du chat aux amis",
+ 'wa':"les réglages de confidentialité, en particulier l'ajout aux groupes",
+ 'yt':"le mode restreint et le rattachement à un compte supervisé",
+ 'audit-comptes':"la liste des comptes connectés dans chaque application",
+ 'audit-vpn':"la liste des VPN et profils de configuration installés",
+ 'audit-cache':"les applications en double ou au nom anodin",
+ 'audit-ia':"la liste des sites jamais autorisés dans le filtre web, et les autorisations d'installation"
+};
+ACTIONS.forEach(a=>{if(FIND[a.id])a.find=FIND[a.id]});
+
+/* Hook de remontée anonyme. Par défaut : rien ne sort du téléphone.
+   Pour détecter les guides devenus faux, brancher ici un simple compteur
+   (identifiant d'action uniquement, aucune autre donnée). */
+function reportStuck(id){
+  const c=store.get('stuck')||{}; c[id]=(c[id]||0)+1; store.set('stuck',c);
+}
+
+/* ===================== sélection ===================== */
+function ageTier(){return {a:0,b:1,c:2,d:3}[A.age]??1}
+function plan(){
+  const os=A.os,apps=A.apps||[],tier=ageTier();
+  const acts=ACTIONS.filter(x=>{
+    if(x.os!=='all'&&os!=='both'&&x.os!==os)return false;
+    if(x.app&&!apps.includes(x.app))return false;
+    if(x.id==='ado-pacte'&&tier<2)return false;
+    if(x.cat==='Audit'&&A.stade==='neuf')return false;
+    return true;
+  });
+  const order=['Socle','Snapchat','TikTok','Instagram','Discord','Jeux','WhatsApp','YouTube','Audit','Accord'];
+  acts.sort((a,b)=>{const c=order.indexOf(a.cat)-order.indexOf(b.cat);return c||((a.crit?0:1)-(b.crit?0:1))});
+  /* insertion des briefs de formation avant chaque bloc plateforme */
+  const out=[];let seen=new Set();
+  const lastSocle=acts.map(x=>x.cat).lastIndexOf('Socle');
+  acts.forEach((x,i)=>{
+    const k=x.app;
+    if(k&&BRIEFS[k]&&!seen.has(k)){seen.add(k);out.push({id:'brief-'+k,brief:k,cat:BRIEFS[k].n,min:2})}
+    out.push(x);
+    if(i===lastSocle&&i<acts.length-1) out.push({id:'jalon-socle',jalon:1,cat:'Socle',min:0});
+  });
+  return out;
+}
+const TIERS=[
+ {k:"Palier 1 · moins de 11 ans",h:"Aucune messagerie ouverte.",b:"À cet âge le risque n'est pas le réseau social, c'est le chat des jeux et les commentaires. Contacts en liste blanche, installation impossible sans vous, chat des jeux coupé."},
+ {k:"Palier 2 · 11 à 12 ans",h:"Messagerie fermée, réseaux sociaux non.",b:"Une messagerie avec des contacts connus, oui. Les réseaux sociaux, non — et depuis 2026 c'est la loi qui le dit, ce qui vous décharge : vous n'êtes plus le méchant, vous appliquez une règle."},
+ {k:"Palier 3 · 13 à 14 ans",h:"La zone grise.",b:"Des comptes sont possibles avec votre accord, mais à conditions fermes : supervision activée, comptes privés, pas de messages d'inconnus, revue des nouveaux contacts une fois par mois."},
+ {k:"Palier 4 · 15 ans et plus",h:"Le réglage compte moins que l'accord.",b:"Il sait contourner ce que vous posez. Gardez le socle technique, allégez le reste, et investissez dans un accord clair — c'est ce qui le protège encore."}
+];
+
+function buildReport(){
+  store.set('answers',A);
+  const L=plan(),T=TIERS[ageTier()];
+  const acts=L.filter(x=>!x.brief&&!x.jalon);
+  document.getElementById('rTier').textContent=T.k;
+  document.getElementById('rTitle').textContent=T.h;
+  let body=T.b;
+  if(A.code==='oui'||A.code==='sais')body+=" Point d'alerte : votre enfant connaît le code du téléphone, donc la première action du plan n'est pas négociable.";
+  if(A.stade==='installe')body+=" Le téléphone est en service depuis un moment : annoncez les changements avant de les faire, sinon vous obtiendrez un deuxième téléphone caché plutôt qu'un enfant protégé.";
+  document.getElementById('rBody').textContent=body;
+  document.getElementById('rCount').textContent=L.length;
+  document.getElementById('rCrit').textContent=acts.filter(x=>x.crit).length;
+  document.getElementById('rTime').textContent=L.reduce((s,x)=>s+(x.min||3),0);
+  const box=document.getElementById('rList');box.innerHTML='';let n=0,cat=null;
+  L.forEach(x=>{
+    if(x.cat!==cat&&!x.jalon){cat=x.cat;const cc=CATCOLOR[cat]||CATCOLOR['Socle'];box.insertAdjacentHTML('beforeend',`<div class="grp" style="border-left:3px solid ${cc.bg};padding-left:10px"><h3>${cat}</h3></div>`)}
+    if(!x.jalon)n++;
+    box.insertAdjacentHTML('beforeend',
+      `<div class="item"><span class="n">${x.jalon?'✓':String(n).padStart(2,'0')}</span><span class="t">${x.jalon?'<i style="color:var(--signal)">Le socle est posé — vous pouvez vous arrêter là</i>':x.brief?'Comprendre '+BRIEFS[x.brief].n:x.t}</span>${x.crit?'<span class="flag">Critique</span>':''}</div>`);
+  });
+  show('vReport');
+}
+
+/* ===================== exécution ===================== */
+/* ===================== couleur d'accent par catégorie =====================
+   Reprend, quand possible, la couleur de marque de l'application pour que
+   le plan soit scannable d'un coup d'œil plutôt qu'un mur de cartes identiques. */
+const CATCOLOR={
+  'Socle':{bg:'#16332A',fg:'#fff'},
+  'Snapchat':{bg:'#D6B800',fg:'#000'},
+  'TikTok':{bg:'#000000',fg:'#fff'},
+  'Instagram':{bg:'#C13584',fg:'#fff'},
+  'Discord':{bg:'#5865F2',fg:'#fff'},
+  'Jeux':{bg:'#2E7D32',fg:'#fff'},
+  'WhatsApp':{bg:'#128C4A',fg:'#fff'},
+  'YouTube':{bg:'#CC0000',fg:'#fff'},
+  'Audit':{bg:'#B08A3E',fg:'#fff'},
+  'Accord':{bg:'#3E4A42',fg:'#fff'}
+};
+
+let L=[],ei=0,R={};
+
+/* ===================== score de protection =====================
+   Les actions critiques comptent double : le score reflète le niveau
+   de protection réel, pas juste le nombre de cases cochées. */
+function protectionScore(){
+  const acts=L.filter(x=>!x.brief&&!x.jalon);
+  if(!acts.length)return 0;
+  let total=0,done=0;
+  acts.forEach(x=>{const w=x.crit?2:1;total+=w;if(R[x.id]==='done')done+=w});
+  return Math.round(done/total*100);
+}
+function scoreColor(pct){return pct>=80?'#3F6B4A':pct>=45?'#B08A3E':'#A63B2E'}
+function scoreRing(pct,size,label){
+  const stroke=Math.max(5,Math.round(size*0.09)),r=(size-stroke)/2,c=2*Math.PI*r;
+  const off=c*(1-pct/100),color=scoreColor(pct),fs=Math.round(size*0.26);
+  return `<div class="score-ring" style="width:${size}px;height:${size}px">
+    <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="transform:rotate(-90deg)">
+      <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="var(--line)" stroke-width="${stroke}"/>
+      <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${color}" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" style="transition:stroke-dashoffset .5s ease"/>
+    </svg>
+    <span class="pct" style="font-size:${fs}px;color:${color}">${pct}%${label?`<small>${label}</small>`:''}</span>
+  </div>`;
+}
+function startExec(){
+  L=plan();R=store.get('progress')||{};
+  ei=L.findIndex(x=>!R[x.id]);if(ei<0)ei=0;
+  show('vExec');renderStep();
+}
+function quitExec(){store.set('progress',R);finish()}
+
+function renderStep(){
+  const x=L[ei];
+  document.getElementById('spine').innerHTML=L.map((a,i)=>`<i class="${i===ei?'now':(R[a.id]||'')}"></i>`).join('');
+  document.getElementById('scoreMini').innerHTML=scoreRing(protectionScore(),40);
+  const cc=CATCOLOR[x.cat]||CATCOLOR['Socle'];
+  document.getElementById('ePos').innerHTML=`<span style="color:${cc.bg}">●</span> ${x.cat} · ${ei+1} sur ${L.length}`;
+  const el=document.getElementById('step'),act=document.getElementById('execActions');
+
+  if(x.jalon){
+    const rest=L.length-ei-1;
+    el.className='step';
+    el.innerHTML=`<div class="milestone"><div class="ring"></div>
+      <h2>Le socle est posé</h2>
+      <p>C'est la partie qui compte le plus, et elle est faite. Vos réglages ne peuvent plus être désactivés par votre enfant en quinze secondes.</p>
+      <div class="gotcha"><ul>
+        <li>Les restrictions sont protégées par un code qu'il ne connaît pas.</li>
+        <li>Il ne peut plus installer, supprimer ni réinstaller une application sans vous.</li>
+        <li>Il ne peut plus modifier sa date de naissance pour être traité comme un adulte.</li>
+      </ul></div>
+      <p><b>Il reste ${rest} écran${rest>1?'s':''}</b>, application par application. Vous pouvez continuer maintenant, ou revenir demain : votre place est gardée.</p></div>`;
+    act.innerHTML=`<button class="ok" onclick="mark('done')">Continuer</button>
+      <button onclick="quitExec()">Je reprends plus tard</button>`;
+    window.scrollTo(0,0);return;
+  }
+  if(x.brief){
+    const B=BRIEFS[x.brief];
+    el.className='step brief';
+    el.innerHTML=`<span class="chip brief">À savoir avant de régler</span>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">${appBadge(x.brief)}<h2 style="margin:0">${B.n}</h2></div>
+      <p class="sub">${B.sub}</p>
+      <p class="note" style="margin-bottom:10px">${B.facts.length} points — touchez un titre pour le lire.</p>
+      ${factList(B.facts,true)}
+      <div class="signals"><h4>Une phrase à lui dire cette semaine</h4>
+        <p style="font-family:var(--display);font-size:18px;line-height:1.35">« ${B.say} »</p></div>`;
+    act.innerHTML=`<button class="wide" onclick="mark('done')">J'ai lu, on configure</button>`;
+    wireAccordion(el);
+  }else{
+    el.className='step';
+    el.innerHTML=`<span class="chip ${x.crit?'crit':''}"${x.crit?'':` style="background:${cc.bg};color:${cc.fg}"`}>${x.crit?'Action critique':x.cat}</span>
+      <h2>${x.t}</h2>
+      <div class="why"><b>Pourquoi</b>${x.why}</div>
+      ${lockBadge(x.lock)}
+      <div class="dothis">Sur le téléphone de votre enfant</div>
+      <ol>${x.steps.map(s=>{
+        const txt=typeof s==='string'?s:s.t, mk=typeof s==='string'?null:s.m;
+        return `<li>${txt}${mk?M(mk):''}</li>`;
+      }).join('')}</ol>
+      ${x.tip?`<p class="tip">${x.tip}</p>`:''}
+      ${x.find?`<div class="find"><b>Si le libellé a changé</b>Les menus sont renommés à chaque mise à jour. Ce que vous cherchez, c'est ${x.find}.</div>`:''}
+      <p class="verif">Chemins vérifiés en ${VERIF}</p>`;
+    act.innerHTML=`<button class="ok" onclick="mark('done')">C'est fait</button>
+      <button onclick="mark('skip')">Passer</button>
+      <button class="stuckb" onclick="mark('stuck')">Bloqué</button>`;
+  }
+  window.scrollTo(0,0);
+}
+function mark(s){if(s==='stuck')reportStuck(L[ei].id);R[L[ei].id]=s;store.set('progress',R);ei++;ei>=L.length?finish():renderStep()}
+
+function finish(){
+  const acts=L.filter(x=>!x.brief&&!x.jalon);
+  const done=acts.filter(x=>R[x.id]==='done').length;
+  const stuck=acts.filter(x=>R[x.id]==='stuck');
+  const critLeft=acts.filter(x=>x.crit&&R[x.id]!=='done');
+  document.getElementById('scoreHero').innerHTML=
+    scoreRing(protectionScore(),128)+`<span class="cap">Protection du téléphone</span>`;
+  document.getElementById('dTitle').textContent=
+    critLeft.length?"Il reste des points critiques ouverts.":done?"Le téléphone est configuré.":"Reprenons quand vous voulez.";
+  document.getElementById('dLede').textContent=critLeft.length
+    ? `${done} action${done>1?'s':''} sur ${acts.length}, mais ${critLeft.length} action${critLeft.length>1?'s':''} critique${critLeft.length>1?'s':''} manque${critLeft.length>1?'nt':''}. Sans elle${critLeft.length>1?'s':''}, le reste des réglages peut être désactivé par votre enfant.`
+    : `${done} action${done>1?'s':''} sur ${acts.length}. Il reste la partie que personne ne peut faire à votre place.`;
+  document.getElementById('dStuck').innerHTML=stuck.length
+    ? `<div class="stuck-list"><h3>Là où vous avez bloqué</h3><ul>${stuck.map(x=>`<li>${x.t}</li>`).join('')}</ul><p style="font-size:13.5px;margin-top:10px">Si un intitulé de menu ne correspond pas, c'est une différence de version. Le 3018 répond aussi aux questions de configuration, gratuitement, 7j/7.</p></div>`:'';
+  show('vDone');
+}
+
+/* ===================== formation (consultation libre) ===================== */
+function renderLearn(){
+  const t=document.getElementById('learnTiles');
+  t.innerHTML=Object.entries(BRIEFS).map(([k,B])=>
+    `<button class="tile" onclick="openBrief('${k}')">${appBadge(k)}<span><b>${B.n}</b><span>${B.sub}</span></span></button>`).join('');
+  document.getElementById('learnBody').innerHTML='';
+}
+function openBrief(k){
+  const B=BRIEFS[k];
+  const body=document.getElementById('learnBody');
+  document.getElementById('learnTiles').innerHTML='';
+  body.innerHTML=
+    `<div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">${appBadge(k)}<h2 style="font-size:26px;margin:0">${B.n}</h2></div>
+     <p class="sub" style="color:var(--muted);font-size:14.5px;margin-bottom:16px">${B.sub}</p>
+     ${factList(B.facts,true)}
+     <div class="signals"><h4>Une phrase à lui dire cette semaine</h4><p style="font-family:var(--display);font-size:18px;line-height:1.35">« ${B.say} »</p></div>
+     <button class="btn btn-ghost" onclick="renderLearn()">← Toutes les applications</button>`;
+  wireAccordion(body);
+  window.scrollTo(0,0);
+}
+
+/* ===================== prévention ===================== */
+const PREV=`
+<p class="note" style="margin-bottom:10px">5 temps — touchez un titre pour le lire.</p>
+<details class="fact" open><summary><span class="idx">01</span><span>Le contact</span></summary><div class="body"><p>Il se fait sur un espace public : commentaires, serveur de jeu, suggestions d'amis. L'adulte n'a rien de louche. Il est drôle, il connaît le jeu, il partage les mêmes centres d'intérêt — parce qu'il les a étudiés.</p></div></details>
+<details class="fact red"><summary><span class="idx">02</span><span>Le déplacement</span></summary><div class="body"><p>« On continue sur Snap ? » « T'as Discord ? » C'est le signal le plus fiable qui existe, et le plus facile à apprendre à un enfant. Une plateforme publique et modérée vers une messagerie privée et éphémère : le seul intérêt de ce déplacement, c'est de ne plus être vu.</p></div></details>
+<details class="fact"><summary><span class="idx">03</span><span>Le lien privilégié</span></summary><div class="body"><p>Compliments, attention quotidienne, cadeaux — Robux, skins, cartes, argent. Puis la phrase clé : « les autres ne comprendraient pas », « c'est notre truc à nous ». L'isolement est construit délibérément, il n'arrive pas par hasard.</p></div></details>
+<details class="fact"><summary><span class="idx">04</span><span>La première image</span></summary><div class="body"><p>Rarement demandée frontalement. Souvent amenée par un échange : il envoie d'abord, ou propose un jeu, ou banalise. L'enfant participe et se sent aussitôt complice — c'est exactement l'effet recherché.</p></div></details>
+<details class="fact red"><summary><span class="idx">05</span><span>Le chantage</span></summary><div class="body"><p>Le ton change d'un coup : envoie plus, ou je diffuse à ta famille et à ton collège. Ça peut basculer en quelques heures. À ce stade l'enfant est terrorisé et convaincu que c'est sa faute — et c'est cette conviction qui l'empêche de parler, pas la menace elle-même.</p></div></details>
+
+<div class="signals">
+<h4>Ce qui doit vous alerter</h4>
+<ul>
+<li>Il cache l'écran, retourne le téléphone quand vous entrez dans la pièce.</li>
+<li>Des contacts nouveaux qu'il ne sait pas situer, ou qu'il décrit vaguement.</li>
+<li>Des objets, du crédit de jeu ou de l'argent dont il n'explique pas l'origine.</li>
+<li>Un changement d'humeur net après les moments passés sur le téléphone.</li>
+<li>Il se met à parler d'un « ami » qu'il n'a jamais rencontré et dont l'âge reste flou.</li>
+<li>Un repli soudain, un sommeil perturbé, un décrochage scolaire sans cause apparente.</li>
+</ul>
+</div>
+
+<details class="fact red"><summary><span>Ce qu'il ne faut surtout pas faire en découvrant</span></summary><div class="body">
+<p>Ne demandez pas « pourquoi tu as fait ça ». Ne menacez pas de confisquer le téléphone — c'est précisément la peur qui l'a fait se taire jusque-là. Ne confrontez pas le suspect vous-même. Ne faites pas de capture d'écran sur Snapchat ou Instagram : l'autre personne est notifiée et disparaît.</p></div></details>
+
+<details class="fact"><summary><span>Ce qu'il faut dire, dans cet ordre</span></summary><div class="body">
+<p>« Tu n'as rien fait de mal. » « Tu n'es pas puni. » « On va s'en occuper à deux. » Ensuite seulement, les questions — et calmement. S'il y a déjà eu chantage : la seule bonne réponse est d'arrêter d'envoyer et d'arrêter de payer. Céder n'arrête jamais un maître-chanteur, ça lui confirme que ça marche.</p></div></details>
+
+<details class="fact"><summary><span>La conversation à avoir avant qu'il ne se passe quoi que ce soit</span></summary><div class="body">
+<p>Trois choses, à répéter tranquillement une fois de temps en temps, sans en faire un sermon : <b>si quelqu'un te demande de changer d'application, viens me voir</b> ; <b>un adulte qui demande le secret à un enfant a toujours tort</b> ; <b>quoi que tu aies déjà envoyé, tu peux m'en parler et tu ne seras pas puni</b>.</p></div></details>
+`;
+
+/* ===================== rappels agenda (.ics) ===================== */
+function remPlan(){
+  const ado=ageTier()===3, apps=A.apps||[];
+  const r=[];
+  if(!ado) r.push({when:"Chaque semaine",freq:"WEEKLY",int:1,t:"Un coup d'oeil aux nouveaux contacts",
+    d:"2 minutes, pas une fouille. "+([apps.includes('snap')&&"Family Center de Snapchat : les nouveaux contacts de la semaine.",apps.includes('jeux')&&"Liste d'amis des jeux : un nom que vous ne connaissez pas ?"].filter(Boolean).join(" ")||"Les nouveaux contacts dans ses applications.")});
+  r.push({when:"Chaque mois",freq:"MONTHLY",int:1,t:"Verification du socle",
+    d:"5 minutes, quatre points. 1) Le code des restrictions est-il toujours distinct du code du telephone ? 2) De nouvelles applications sont-elles apparues ? 3) Un second compte quelque part ? 4) Un VPN installe ?"});
+  r.push({when:"Tous les 3 mois",freq:"MONTHLY",int:3,t:"Refaire le diagnostic complet",
+    d:"20 minutes. Les reglages par defaut des plateformes changent, et votre enfant aussi."});
+  r.push({when:"1er septembre",freq:"YEARLY",m:9,day:1,t:"Rentree : nouveau groupe, nouveaux contacts",
+    d:"Le moment de l'annee ou la liste d'amis grossit le plus vite. Repassez-la en revue avec lui."});
+  r.push({when:"Mi-septembre",freq:"YEARLY",m:9,day:20,t:"Mise a jour majeure du systeme",
+    d:"Une grosse mise a jour peut reinitialiser ou renommer des reglages. Reverifiez le socle."});
+  r.push({when:"26 decembre",freq:"YEARLY",m:12,day:26,t:"Nouvel appareil ?",
+    d:"Tout appareil neuf repart de zero : aucune de vos restrictions ne s'y applique."});
+  r.push({when:"Anniversaire",freq:null,t:"A chaque anniversaire",
+    d:"Les plateformes changent leurs reglages par defaut a 13 et 16 ans. Ce qui etait ferme peut s'ouvrir tout seul."});
+  return r;
+}
+function renderRem(){
+  document.getElementById('remBody').innerHTML=remPlan().map(r=>
+    `<div class="rem"><span class="when">${r.when}</span><span><b>${r.t}</b><span>${r.d}</span></span></div>`).join('')
+    +(ageTier()===3?`<p class="note" style="margin-top:12px">Le rappel hebdomadaire est desactive : a partir de 15 ans, inspecter le telephone toutes les semaines coute plus que ca ne protege.</p>`:'');
+}
+function icsDate(d){return d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z'}
+function esc(t){return String(t).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n')}
+function downloadICS(){
+  const now=new Date(), Y=now.getFullYear();
+  const out=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Son premier telephone//FR','CALSCALE:GREGORIAN'];
+  remPlan().forEach((r,i)=>{
+    if(!r.freq)return;
+    let start;
+    if(r.freq==='YEARLY'){start=new Date(Y,r.m-1,r.day,19,0);if(start<now)start=new Date(Y+1,r.m-1,r.day,19,0)}
+    else if(r.freq==='WEEKLY'){start=new Date(now);start.setDate(now.getDate()+((7-now.getDay())%7||7));start.setHours(19,0,0,0)}
+    else{start=new Date(Y,now.getMonth()+1,1,19,0)}
+    const end=new Date(start.getTime()+15*60000);
+    let rule='FREQ='+r.freq; if(r.int>1)rule+=';INTERVAL='+r.int;
+    out.push('BEGIN:VEVENT','UID:spt-'+i+'-'+start.getTime()+'@spt','DTSTAMP:'+icsDate(now),
+      'DTSTART:'+icsDate(start),'DTEND:'+icsDate(end),'RRULE:'+rule,
+      'SUMMARY:'+esc(r.t),'DESCRIPTION:'+esc(r.d),
+      'BEGIN:VALARM','TRIGGER:-PT30M','ACTION:DISPLAY','DESCRIPTION:'+esc(r.t),'END:VALARM','END:VEVENT');
+  });
+  out.push('END:VCALENDAR');
+  const blob=new Blob([out.join('\r\n')],{type:'text/calendar;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download='rappels-premier-telephone.ics';
+  document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);
+}
+
+/* ===================== navigation ===================== */
+const VIEWS=['vHome','vDiag','vReport','vExec','vDone','vLearn','vPrev','vRem','vUrgence','vDumb','vMentions'];
+const TAGS={vHome:'Accueil',vDiag:'Diagnostic',vReport:'Votre plan',vExec:'En cours',vDone:'Terminé',vLearn:'Formation',vPrev:'Prévention',vRem:'Rappels',vUrgence:'Urgence',vDumb:'Mode simple',vMentions:'Mentions légales'};
+function show(v){
+  if(!['vUrgence','vLearn','vPrev','vRem','vDumb','vMentions'].includes(v))lastView=v;
+  if(v==='vLearn')renderLearn();
+  if(v==='vPrev'){const pb=document.getElementById('prevBody');pb.innerHTML=PREV;wireAccordion(pb)}
+  if(v==='vRem')renderRem();
+  if(v==='vDumb')renderDumb();
+  VIEWS.forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==v));
+  document.getElementById('mastTag').textContent=TAGS[v]||'';
+  window.scrollTo(0,0);
+}
+
+/* ===================== PWA ===================== */
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
+
+/* ===================== bannière d'installation ===================== */
+let deferredInstall=null;
+const isStandalone=()=>window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+const isIOS=()=>/iphone|ipad|ipod/i.test(navigator.userAgent)&&!window.MSStream;
+
+function showInstallBar(){
+  if(isStandalone()||store.get('installDone'))return;
+  const bar=document.getElementById('installBar');
+  const msg=document.getElementById('installMsg');
+  const btn=document.getElementById('installBtn');
+  if(isIOS()){
+    msg.innerHTML='Installez l\'app sur votre écran d\'accueil : appuyez sur <b>Partager</b> puis <b>Sur l\'écran d\'accueil</b>.';
+    btn.classList.add('hidden');
+  }else if(deferredInstall){
+    msg.textContent='Installez l\'application pour un accès plus rapide, même hors connexion.';
+    btn.classList.remove('hidden');
+  }else return;
+  bar.classList.remove('hidden');
+}
+function hideInstallBar(remember){
+  document.getElementById('installBar').classList.add('hidden');
+  if(remember)store.set('installDone',true);
+}
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  deferredInstall=e;
+  showInstallBar();
+});
+window.addEventListener('appinstalled',()=>hideInstallBar(true));
+document.getElementById('installBtn').onclick=async()=>{
+  if(!deferredInstall)return;
+  deferredInstall.prompt();
+  await deferredInstall.userChoice;
+  deferredInstall=null;
+  hideInstallBar(true);
+};
+document.getElementById('installClose').onclick=()=>hideInstallBar(true);
+if(isIOS())showInstallBar();
+
+/* reprise de session */
+(function(){
+  const saved=store.get('answers');
+  if(saved&&Object.keys(saved).length){
+    A=saved;
+    const p=store.get('progress');
+    if(p&&Object.keys(p).length){
+      const b=document.getElementById('homeCta');
+      b.textContent='Reprendre où vous en étiez';b.onclick=()=>startExec();
+    }
+  }
+})();
+</script>
+</body>
+</html>
